@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "pm2 start npm --name 'trading-core-graph-dev' -- start",
+    "production": "pm2 start npm --name 'trading-core-graph-prod' -- start"
   },
   "dependencies": {
     "@types/socket.io-client": "^1.4.32",
