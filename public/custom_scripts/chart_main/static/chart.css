@@ -233,7 +233,7 @@ body, html {
     border: 0 !important;
     line-height: 24px;
     height: 24px;
-    background: #31496a;
+    background: transparent;
     color: #b0bec5;
     font-size: 11px;
     font-weight: 400;
@@ -250,22 +250,22 @@ body, html {
 }
 
 .bottom-widgetbar-content.backtesting .button.active, .ch-controls .button.active, .feature-no-touch .bottom-widgetbar-content.backtesting .button:active, .feature-no-touch .ch-controls .button:active, .feature-no-touch .header-chart-panel .button.active:hover, .feature-no-touch .header-chart-panel .button:active, .feature-no-touch .hotlist-controls .button:active, .feature-no-touch .save-load-buttons .active:hover, .feature-no-touch .save-load-buttons a:not(.link):active, .feature-no-touch .symbol-edit-widget .button:active, .feature-touch .bottom-widgetbar-content.backtesting .button:active, .feature-touch .ch-controls .button:active, .feature-touch .header-chart-panel .button:active, .feature-touch .hotlist-controls .button:active, .feature-touch .save-load-buttons a:not(.link):active, .feature-touch .symbol-edit-widget .button:active, .header-chart-panel .button.active, .hotlist-controls .button.active, .save-load-buttons .active, .symbol-edit-widget .button.active {
-    background: #31496a !important;
+    background: transparent !important;
     color: #0cbef3;
 }
 
 .favored-list-container span.active, .favored-list-container span.selected, .feature-no-touch .favored-list-container span:active, .feature-touch .favored-list-container span:active {
-    background: #31496a !important;
+    background: transparent !important;
     color: #0cbef3;
 }
 
 .feature-no-touch .header-chart-panel .button:hover, .feature-no-touch .symbol-edit-widget .button:hover {
-    background: #31496a;
+    background: transparent;
     color: #ffffff;
 }
 
 .favored-list-container.active span.submenu, .favored-list-container span.submenu.active {
-    background: #31496a !important;
+    background: transparent !important;
     color: #0cbef3;
 }
 
@@ -311,7 +311,7 @@ body, html {
     font-size: 11px;
     font-weight: 700;
     border: 0 !important;
-    background: #31496a;
+    background: transparent;
     color: #b0bec5;
     padding: 0 8px;
     line-height: 24px;
@@ -325,7 +325,7 @@ body, html {
 }
 
 .favored-list-container span:hover, .feature-no-touch .favored-list-container:hover span, .feature-no-touch .favored-list-container span:hover {
-    background: #31496a !important;
+    background: transparent !important;
     color: #ffffff !important;
     border-color: #58637a !important;
 }
@@ -1667,7 +1667,7 @@ div.tooltip {
     text-indent: -99999em;
     z-index: 10;
     cursor: pointer;
-    background: #31496a;
+    background: transparent;
     color: #b0bec5;
 }
 
