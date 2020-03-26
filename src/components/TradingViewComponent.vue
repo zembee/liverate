@@ -8,7 +8,6 @@ import axios from "axios";
 import { Watch, Component } from "vue-property-decorator";
 import store from "../store";
 
-
 declare const TradingView: any;
 declare const $: any;
 const LastPrice = 1234.2365;
@@ -62,41 +61,39 @@ export default class TradingViewComponent extends Vue {
     this.socketconect();
   }
   socketconect() {
-
-const { Base64 } = require('js-base64')
+    const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
-const url = 'https://api.detrading.co/api/v1'
+    const url = "https://api.detrading.co/api/v1";
 
-// const username = 'de-trading-dev'
-const username = 'DE-TRADING-PROD'
+    // const username = 'de-trading-dev'
+    const username = "DE-TRADING-PROD";
     // const password = '0oMDPnx7HDYmbnTHKGNu?xdev_detrading@2019'
-const password = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019"
-const basicAuth = Base64.encode(username + ':' + password)
+    const password =
+      "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+    const basicAuth = Base64.encode(username + ":" + password);
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDAxMWQ0MWI5JDEkMzdjMGYyZjQ2MzgyYzM1YWZhYzFkMTNiZDczM2UwMWZiMDcwZGRhNyIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEwIDEyOjU3OjA5IiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg2MzU4MjksImV4cCI6MTU4MTIyNzgyOX0.T3Q4HdW5xRTohlw_x2z9ShO60G51jrzXw4iyM9vlqqw'
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDg1YzQ5ZjU3JDEkYmI2YzZhZDZlZDM3ZjljM2ZhNTA0MzY1Zjg2N2FkODc3ZjEwZGJmMCIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEyIDAzOjMwOjExIiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg3NzQ2MTEsImV4cCI6MTU3OTM3OTQxMX0.LGKQQa8pXif8OQSQUdagiHVM3yJcn8Gp3NrdSAic4iQ'
-const language = 'EN'
-const configs = {
-    transportOptions: {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDg1YzQ5ZjU3JDEkYmI2YzZhZDZlZDM3ZjljM2ZhNTA0MzY1Zjg2N2FkODc3ZjEwZGJmMCIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEyIDAzOjMwOjExIiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg3NzQ2MTEsImV4cCI6MTU3OTM3OTQxMX0.LGKQQa8pXif8OQSQUdagiHVM3yJcn8Gp3NrdSAic4iQ";
+    const language = "EN";
+    const configs = {
+      transportOptions: {
         polling: {
-            extraHeaders: {
-                'Authorization': `Basic ${basicAuth}`,
-                 'x-access-token': token,
-                'accept-language': language
-            }
+          extraHeaders: {
+            Authorization: `Basic ${basicAuth}`,
+            "x-access-token": token,
+            "accept-language": language
+          }
         }
-    }
-}
+      }
+    };
 
     const io = require("socket.io-client");
-    const Matching = io.connect(
-      `${url}/orders/matching/usd_btc`,
-      configs
-    );
+    const Matching = io.connect(`${url}/orders/matching/usd_btc`, configs);
     Matching.on("real_time", (data: any) => {
       console.log("--real_time--", data);
       //   console.log(data);
-    //   this.getapi();
-         this.newBlock(data["res_data"]);
+      //   this.getapi();
+      this.newBlock(data["res_data"]);
     });
 
     //1585149840000
@@ -155,7 +152,7 @@ const configs = {
       this.time = time;
       this.valume = 0;
     } else {
-        this.updateData(data,datax,time);
+      this.updateData(data, datax, time);
     }
 
     // datax.push({
@@ -168,21 +165,19 @@ const configs = {
     // });
   }
   updateData(data: any, bar: any, time: any) {
-     
     let newbar = bar[bar.length - 1];
-    if(data.price > newbar.high){
-        newbar.high = data.price;
+    if (data.price > newbar.high) {
+      newbar.high = data.price;
     }
-    if(data.price < newbar.low){
-        newbar.low = data.price;
+    if (data.price < newbar.low) {
+      newbar.low = data.price;
     }
     newbar.close = data.price;
-    newbar.volume +=  parseFloat(data.valume) ;
-    console.log("newbar",newbar);
+    newbar.volume += parseFloat(data.valume);
+    console.log("newbar", newbar);
     bar[bar.length - 1] = newbar;
-     store.dispatch("updateChartData", bar);
+    store.dispatch("updateChartData", bar);
     this.changePair();
-
   }
 
   pushData(data: any, bar: any, time: any) {
@@ -192,7 +187,7 @@ const configs = {
       open: data.price,
       high: data.price,
       low: data.price,
-      volume: parseFloat(data.valume) 
+      volume: parseFloat(data.valume)
     });
     store.dispatch("updateChartData", bar);
     this.changePair();
@@ -274,34 +269,34 @@ const configs = {
         library_path: "/custom_scripts/chart_main/",
         locale: "en",
         timezone: "Asia/Bangkok", //todo: ustawianie timezone'a po strefie usera
-        charts_storage_api_version: "1.1",
+        charts_storage_api_version: "1.2",
         client_id: "tradingview.com",
         user_id: "public_user_id",
         debug: true,
         // loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
         interval: "60",
         // timeframe:'',//todo: na koncu
-        toolbar_bg: "#20334d",
+        toolbar_bg: "#313337",
         // saved_data: this.savedData,
         allow_symbol_change: false,
         time_frames: [
-          { text: "1y", resolution: "1y" },
-          { text: "6m", resolution: "6m" },
-          { text: "3m", resolution: "3m" },
-          { text: "1m", resolution: "1m" },
-          { text: "1w", resolution: "1w" },
-          { text: "3d", resolution: "3d" },
-          { text: "1d", resolution: "1d" },
-          { text: "6h", resolution: "6h" },
-          { text: "1h", resolution: "1h" }
+          { text: "1y", resolution: "1W" },
+          { text: "6m", resolution: "3D" },
+          { text: "3m", resolution: "1D" },
+          { text: "1m", resolution: "1D" },
+          { text: "1w", resolution: "30" },
+          { text: "3d", resolution: "30" },
+          { text: "1d", resolution: "30" },
+          { text: "6h", resolution: "15" },
+          { text: "1h", resolution: "1" }
         ],
         drawings_access: {
           type: "black",
-           tools: [{name: "Regression Trend"}]//todo: moje
-        //   tools: [
-        //     { name: "Trend Line", grayed: true },
-        //     { name: "Trend Angle", grayed: true }
-        //   ] //todo: bb
+          tools: [{ name: "Regression Trend" }] //todo: moje
+          //   tools: [
+          //     { name: "Trend Line", grayed: true },
+          //     { name: "Trend Angle", grayed: true }
+          //   ] //todo: bb
         },
         disabled_features: [
           "header_symbol_search",
@@ -345,7 +340,7 @@ const configs = {
         },
         overrides: {
           "symbolWatermarkProperties.color": "rgba(0,0,0, 0)",
-          "paneProperties.background": "#20334d",
+          "paneProperties.background": "#313337",
           "paneProperties.vertGridProperties.color": "#f7f7f700",
           "paneProperties.horzGridProperties.color": "#f7f7f700",
           "paneProperties.crossHairProperties.color": "#58637a",
@@ -376,15 +371,15 @@ const configs = {
           "paneProperties.leftAxisProperties.log": false,
           "paneProperties.leftAxisProperties.logDisabled": false,
           "paneProperties.leftAxisProperties.alignLabels": true,
-         "paneProperties.legendProperties.showStudyArguments": true,
+          "paneProperties.legendProperties.showStudyArguments": true,
           "paneProperties.legendProperties.showStudyTitles": true,
           "paneProperties.legendProperties.showStudyValues": true,
           "paneProperties.legendProperties.showSeriesTitle": true,
           "paneProperties.legendProperties.showSeriesOHLC": true,
           "scalesProperties.showLeftScale": false,
           "scalesProperties.showRightScale": true,
-          "scalesProperties.backgroundColor": "#20334d",
-          "scalesProperties.lineColor": "#46587b",
+          "scalesProperties.backgroundColor": "#313337",
+          "scalesProperties.lineColor": "#313337",
           "scalesProperties.textColor": "#8f98ad",
           "scalesProperties.scaleSeriesOnly": false,
           "mainSeriesProperties.priceAxisProperties.autoScale": true,
@@ -754,4 +749,5 @@ const configs = {
 #chart_container {
   height: calc(100vh);
 }
+
 </style>
