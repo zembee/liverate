@@ -273,10 +273,10 @@ export default class TradingViewComponent extends Vue {
         client_id: "tradingview.com",
         user_id: "public_user_id",
         debug: true,
-        // loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
-        interval: "60",
+         loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
+        interval: "1",
         // timeframe:'',//todo: na koncu
-        toolbar_bg: "#313337",
+        toolbar_bg: store.getters.Bgcolor,
         // saved_data: this.savedData,
         allow_symbol_change: false,
         time_frames: [
@@ -303,7 +303,7 @@ export default class TradingViewComponent extends Vue {
           "header_interval_dialog_button",
           "show_interval_dialog_on_key_press",
           "symbol_search_hot_key",
-          "study_dialog_search_control",
+         
           "display_market_status",
           "header_compare",
           "edit_buttons_in_legend",
@@ -331,7 +331,9 @@ export default class TradingViewComponent extends Vue {
           "header_resolutions", //todo: przetestowac
           "control_bar", //todo: przetestowac
           "edit_buttons_in_legend", //todo: przetestowac
-          "remove_library_container_border"
+          "remove_library_container_border",
+
+           "study_dialog_search_control",
         ],
         studies_overrides: {
           "volume.volume.color.0": "#fe4761",
@@ -340,7 +342,7 @@ export default class TradingViewComponent extends Vue {
         },
         overrides: {
           "symbolWatermarkProperties.color": "rgba(0,0,0, 0)",
-          "paneProperties.background": "#313337",
+          "paneProperties.background": store.getters.Bgcolor,
           "paneProperties.vertGridProperties.color": "#f7f7f700",
           "paneProperties.horzGridProperties.color": "#f7f7f700",
           "paneProperties.crossHairProperties.color": "#58637a",
@@ -377,9 +379,9 @@ export default class TradingViewComponent extends Vue {
           "paneProperties.legendProperties.showSeriesTitle": true,
           "paneProperties.legendProperties.showSeriesOHLC": true,
           "scalesProperties.showLeftScale": false,
-          "scalesProperties.showRightScale": true,
-          "scalesProperties.backgroundColor": "#313337",
-          "scalesProperties.lineColor": "#313337",
+          "scalesProperties.showRightScale": false,
+          "scalesProperties.backgroundColor": store.getters.Bgcolor,
+          "scalesProperties.lineColor": store.getters.Bgcolor,
           "scalesProperties.textColor": "#8f98ad",
           "scalesProperties.scaleSeriesOnly": false,
           "mainSeriesProperties.priceAxisProperties.autoScale": true,
@@ -695,7 +697,7 @@ export default class TradingViewComponent extends Vue {
           "exchange-traded": "myExchange",
           "exchange-listed": "myExchange",
           has_intraday: true,
-          intraday_multipliers: ["60"], //It is an array containing intraday resolutions (in minutes) the datafeed wants to build by itself. E.g., if the datafeed reported he supports resolutions ["1", "5", "15"], but in fact it has only 1 minute bars for symbol X, it should set intraday_multipliers of X = [1]. This will make Charting Library to build 5 and 15 resolutions by itself.
+          intraday_multipliers: ["1"], //It is an array containing intraday resolutions (in minutes) the datafeed wants to build by itself. E.g., if the datafeed reported he supports resolutions ["1", "5", "15"], but in fact it has only 1 minute bars for symbol X, it should set intraday_multipliers of X = [1]. This will make Charting Library to build 5 and 15 resolutions by itself.
           has_weekly_and_monthly: false,
           has_no_volume: false,
           regular_session: "24x7"

@@ -1,5 +1,6 @@
 const state = {
-    chartData: null
+    chartData: null,
+    bg : '#313337'
 }
 
 export default state

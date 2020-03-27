@@ -115,7 +115,7 @@ body, html {
 }
 
 .pane-legend-line {
-    display: inline;
+    display: block;
     cursor: default;
     pointer-events: none !important;
     font-size: 12px !important;
