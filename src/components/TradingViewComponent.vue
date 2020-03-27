@@ -274,7 +274,7 @@ export default class TradingViewComponent extends Vue {
         user_id: "public_user_id",
         debug: true,
         //  loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
-        interval: "1",
+        interval: "15",
         // timeframe:'',//todo: na koncu
         toolbar_bg: store.getters.Bgcolor,
         // saved_data: this.savedData,
