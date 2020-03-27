@@ -90,10 +90,10 @@ export default class TradingViewComponent extends Vue {
     const io = require("socket.io-client");
     const Matching = io.connect(`${url}/orders/matching/usd_btc`, configs);
     Matching.on("real_time", (data: any) => {
-      console.log("--real_time--", data);
+      // console.log("--real_time--", data);
       //   console.log(data);
       //   this.getapi();
-      this.newBlock(data["res_data"]);
+      // this.newBlock(data["res_data"]);
     });
 
     //1585149840000
@@ -119,21 +119,21 @@ export default class TradingViewComponent extends Vue {
           "DE-TRADING-PROD:aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019"
         )
     };
-    console.log(new Date().getTime());
+    // console.log(new Date().getTime());
 
     Vue.axios
       .get(url + v + link, { headers: Headers })
       .then(response => {
-        console.log("xdata", response.data);
+        // console.log("xdata", response.data);
         let bars = response.data.res_data;
 
-        console.log(bars);
+        // console.log(bars);
         store.dispatch("updateChartData", bars);
         this.changePair();
-        console.log("xdata-", datax);
+        // console.log("xdata-", datax);
       })
       .catch(c => {
-        console.log(c);
+        // console.log(c);
       });
   }
 
@@ -144,8 +144,8 @@ export default class TradingViewComponent extends Vue {
 
   newBlock(data: any) {
     let datax = store.getters.chartData;
-    console.log("x-Data-time", this.time);
-    console.log("x-Data-soket", data);
+    // console.log("x-Data-time", this.time);
+    // console.log("x-Data-soket", data);
     let time = this.timestring(data.time);
     if (this.time != time) {
       this.pushData(data, datax, time);
@@ -174,7 +174,7 @@ export default class TradingViewComponent extends Vue {
     }
     newbar.close = data.price;
     newbar.volume += parseFloat(data.valume);
-    console.log("newbar", newbar);
+    // console.log("newbar", newbar);
     bar[bar.length - 1] = newbar;
     store.dispatch("updateChartData", bar);
     this.changePair();
@@ -197,7 +197,7 @@ export default class TradingViewComponent extends Vue {
     // var moDate = moment(d+"+07:00",'YYYY-MM-DD HH:mm Z');
     // console.log();
     var date = new Date(d);
-    console.log(date);
+    // console.log(date);
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
     var day = date.getDate();
@@ -220,7 +220,7 @@ export default class TradingViewComponent extends Vue {
     timeend =
       year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":00";
 
-    console.log(timestart);
+    // console.log(timestart);
 
     //   this.timestart = new Date(timestart).getTime();
     //   this.timeend = new Date(timeend).getTime();
@@ -241,7 +241,7 @@ export default class TradingViewComponent extends Vue {
       });
       store.dispatch("updateChartData", data);
       this.changePair();
-      console.log("bradata", data);
+      // console.log("bradata", data);
     }, 1000);
     // console.log("bradata",data);
   }
@@ -273,7 +273,7 @@ export default class TradingViewComponent extends Vue {
         client_id: "tradingview.com",
         user_id: "public_user_id",
         debug: true,
-         loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
+        //  loading_screen:{ backgroundColor: "#00ff00",foregroundColor: "#000000", }, //todo:do it
         interval: "1",
         // timeframe:'',//todo: na koncu
         toolbar_bg: store.getters.Bgcolor,
@@ -379,7 +379,7 @@ export default class TradingViewComponent extends Vue {
           "paneProperties.legendProperties.showSeriesTitle": true,
           "paneProperties.legendProperties.showSeriesOHLC": true,
           "scalesProperties.showLeftScale": false,
-          "scalesProperties.showRightScale": false,
+          "scalesProperties.showRightScale": true,
           "scalesProperties.backgroundColor": store.getters.Bgcolor,
           "scalesProperties.lineColor": store.getters.Bgcolor,
           "scalesProperties.textColor": "#8f98ad",
