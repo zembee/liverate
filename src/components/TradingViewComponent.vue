@@ -18,6 +18,8 @@ export default class TradingViewComponent extends Vue {
   chart: any = null;
   currency1: string = "USD";
   currency2: string = "BTC";
+  offset: any = 0;
+  order: any = 1000;
   bars: any = [
     {
       time: new Date().getTime(),
@@ -31,15 +33,19 @@ export default class TradingViewComponent extends Vue {
 
   constructor() {
     super();
-     store.dispatch("updateChartData", this.bars);
-      this.getapi();
-
+    store.dispatch("updateChartData", this.bars);
+     this.getapi();
     // this.createData()
-    
-   
+    console.log(this.offset);
   }
+
+  apix(offset : any){
+
+  }
+
+ 
   socketconect() {
-   //   console.log("xdata--real_time--");
+    //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
     const url = "https://api.detrading.co/api/v1";
@@ -69,7 +75,7 @@ export default class TradingViewComponent extends Vue {
     const io = require("socket.io-client");
     const Matching = io.connect(`${url}/orders/matching/usd_btc`, configs);
     Matching.on("real_time", (data: any) => {
-  //     console.log("xdata--real_time--", data);
+      //     console.log("xdata--real_time--", data);
       //   console.log(data);
       //   this.getapi();
       this.newBlock(data["res_data"]);
@@ -84,7 +90,7 @@ export default class TradingViewComponent extends Vue {
     return datum.getTime() / 1000;
   }
 
-    getapi() {
+  getapi() {
     let datax = store.getters.chartData;
     let url = "https://api.detrading.co";
     let v = "/api/v1";
@@ -99,17 +105,15 @@ export default class TradingViewComponent extends Vue {
         )
     };
     // console.log(new Date().getTime());
-
+console.log(store.getters.bg);
     Vue.axios
       .get(url + v + link, { headers: Headers })
       .then(response => {
- //        console.log("xdata", response.data);
         let bars = response.data.res_data;
-
         // console.log(bars);
         store.dispatch("updateChartData", bars);
         this.changePair();
-            this.socketconect();
+        this.socketconect();
         // console.log("xdata-", datax);
       })
       .catch(c => {
@@ -121,6 +125,8 @@ export default class TradingViewComponent extends Vue {
   timeend = 1;
   time = 0;
   valume = 0;
+
+
 
   newBlock(data: any) {
     let datax = store.getters.chartData;
@@ -134,15 +140,6 @@ export default class TradingViewComponent extends Vue {
     } else {
       this.updateData(data, datax, time);
     }
-
-    // datax.push({
-    //   time: time,
-    //   close: data.price,
-    //   open: data.price,
-    //   high: data.price,
-    //   low: data.price,
-    //   volume: this.valume
-    // });
   }
   updateData(data: any, bar: any, time: any) {
     let newbar = bar[bar.length - 1];
@@ -177,7 +174,6 @@ export default class TradingViewComponent extends Vue {
     // var moDate = moment(d+"+07:00",'YYYY-MM-DD HH:mm Z');
     // console.log();
     var date = new Date(d);
-    // console.log(date);
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
     var day = date.getDate();
@@ -187,24 +183,10 @@ export default class TradingViewComponent extends Vue {
 
     var timestart = null;
     var timeend = null;
-
-    //   var minstart = 0;
-    //   var minend = 0;
-    //   minstart = minutes - (minutes % this.$store.state.unit);
-    //   minend =
-    //     minutes -
-    //     (minutes % this.$store.state.unit) +
-    //     parseFloat(this.$store.state.unit);
     timestart =
       year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":00";
     timeend =
       year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":00";
-
-    // console.log(timestart);
-
-    //   this.timestart = new Date(timestart).getTime();
-    //   this.timeend = new Date(timeend).getTime();
-    //   // return new Date(timestart).getTime();
     return Date.parse(timestart);
   }
 
@@ -237,9 +219,7 @@ export default class TradingViewComponent extends Vue {
   }
 
   mounted() {
-      this.feed = this.createFeed();
-
- 
+    this.feed = this.createFeed();
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
@@ -285,7 +265,7 @@ export default class TradingViewComponent extends Vue {
           "header_interval_dialog_button",
           "show_interval_dialog_on_key_press",
           "symbol_search_hot_key",
-         
+
           "display_market_status",
           "header_compare",
           "edit_buttons_in_legend",
@@ -315,7 +295,7 @@ export default class TradingViewComponent extends Vue {
           "edit_buttons_in_legend", //todo: przetestowac
           "remove_library_container_border",
 
-           "study_dialog_search_control",
+          "study_dialog_search_control"
         ],
         studies_overrides: {
           "volume.volume.color.0": "#fe4761",
@@ -733,5 +713,4 @@ export default class TradingViewComponent extends Vue {
 #chart_container {
   height: calc(100vh);
 }
-
 </style>

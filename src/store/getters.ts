@@ -4,6 +4,9 @@ const getters = {
     },
     Bgcolor(state:any){
         return state.bg
+    },
+    Header(state:any){
+        return  state.Header
     }
 }
 
