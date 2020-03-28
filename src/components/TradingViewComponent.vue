@@ -67,12 +67,12 @@ export default class TradingViewComponent extends Vue {
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
-        console.log(bars.length);
+        // console.log(bars.length);
         this.offset == 0 ? this.newData(bars) : (this.offset = this.order);
         this.offset = this.order ;
         this.order += 1000;
-         console.log(bars);
-         console.log(link);
+        //  console.log(bars);
+        //  console.log(link);
            bars.length >= 1000 ? this.drapi() : this.socketconect();
       })
       .catch(c => {
