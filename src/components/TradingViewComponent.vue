@@ -68,27 +68,30 @@ export default class TradingViewComponent extends Vue {
       .then(response => {
         let bars = response.data.res_data;
         // console.log(bars.length);
-        this.offset == 0 ? this.newData(bars) : (this.offset = this.order);
+        this.offset == 0 ? this.newData(bars) : this.upData(bars);
         this.offset = this.order ;
         this.order += 1000;
-        //  console.log(bars);
-        //  console.log(link);
+        
            bars.length >= 1000 ? this.drapi() : this.socketconect();
       })
       .catch(c => {
         // console.log(c);
       });
   }
-  upData(bars: any) {
+ async upData(bars: any) {
     let data = store.getters.chartData;
-    data.push(bars);
-    store.dispatch("updateChartData", data);
-    this.changePair();
+    let concat = data.concat(bars);
+    // data.push(bars);
+
+    store.dispatch("updateChartData", concat);
+  await this.changePair();
   }
 
-  newData(bars: any) {
+  async newData(bars: any) {
+        
     store.dispatch("updateChartData", bars);
-    this.changePair();
+   await this.changePair();
+   
   }
 
   socketconect() {
