@@ -20,47 +20,26 @@ export default class TradingViewComponent extends Vue {
   currency2: string = "BTC";
   bars: any = [
     {
-      time: 1508313600000,
-      close: 42.1,
-      open: 41.0,
-      high: 43.0,
-      low: 40.4,
-      volume: 12000
-    },
-    {
-      time: 1508317200000,
-      close: 43.4,
-      open: 42.9,
-      high: 44.1,
-      low: 42.1,
-      volume: 18500
-    },
-    {
-      time: 1508320800000,
-      close: 44.3,
-      open: 43.7,
-      high: 44.8,
-      low: 42.8,
-      volume: 24000
-    },
-    {
-      time: 1508324400000,
-      close: 42.8,
-      open: 44.5,
-      high: 44.5,
-      low: 42.3,
-      volume: 45000
+      time: new Date().getTime(),
+      close: 0,
+      open: 0,
+      high: 0,
+      low: 0,
+      volume: 0
     }
   ];
 
   constructor() {
     super();
+     store.dispatch("updateChartData", this.bars);
+      this.getapi();
+
     // this.createData()
-    // store.dispatch("updateChartData", this.bars);
-    this.getapi();
-    this.socketconect();
+    
+   
   }
   socketconect() {
+   //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
     const url = "https://api.detrading.co/api/v1";
@@ -90,10 +69,10 @@ export default class TradingViewComponent extends Vue {
     const io = require("socket.io-client");
     const Matching = io.connect(`${url}/orders/matching/usd_btc`, configs);
     Matching.on("real_time", (data: any) => {
-      // console.log("--real_time--", data);
+  //     console.log("xdata--real_time--", data);
       //   console.log(data);
       //   this.getapi();
-      // this.newBlock(data["res_data"]);
+      this.newBlock(data["res_data"]);
     });
 
     //1585149840000
@@ -105,7 +84,7 @@ export default class TradingViewComponent extends Vue {
     return datum.getTime() / 1000;
   }
 
-  getapi() {
+    getapi() {
     let datax = store.getters.chartData;
     let url = "https://api.detrading.co";
     let v = "/api/v1";
@@ -124,12 +103,13 @@ export default class TradingViewComponent extends Vue {
     Vue.axios
       .get(url + v + link, { headers: Headers })
       .then(response => {
-        // console.log("xdata", response.data);
+ //        console.log("xdata", response.data);
         let bars = response.data.res_data;
 
         // console.log(bars);
         store.dispatch("updateChartData", bars);
         this.changePair();
+            this.socketconect();
         // console.log("xdata-", datax);
       })
       .catch(c => {
@@ -257,7 +237,9 @@ export default class TradingViewComponent extends Vue {
   }
 
   mounted() {
-    this.feed = this.createFeed();
+      this.feed = this.createFeed();
+
+ 
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
