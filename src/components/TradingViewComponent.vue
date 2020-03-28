@@ -40,13 +40,13 @@ export default class TradingViewComponent extends Vue {
 
   testfunction() {
     let xheader = store.getters.Bgcolor;
-    console.log(xheader);
-    console.log("---testfunction---", this.offset);
+    // console.log(xheader);
+    // console.log("---testfunction---", this.offset);
   }
 
   drapi() {
-    console.log(this.offset);
-    console.log(this.order);
+    // console.log(this.offset);
+    // console.log(this.order);
 
     let datax = store.getters.chartData;
     let url = "https://api.detrading.co";
