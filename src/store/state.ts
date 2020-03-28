@@ -1,7 +1,7 @@
 const state = {
     chartData: null,
     bg : '#313337',
-    Header : {
+    header : {
         "Accept-language": "TH",
         "Content-Type": "application/json",
         Authorization:

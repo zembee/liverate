@@ -18,7 +18,7 @@ export default class TradingViewComponent extends Vue {
   chart: any = null;
   currency1: string = "USD";
   currency2: string = "BTC";
-  offset: any = 0;
+
   order: any = 1000;
   bars: any = [
     {
@@ -31,19 +31,64 @@ export default class TradingViewComponent extends Vue {
     }
   ];
 
+  offset: any = 0;
   constructor() {
     super();
     store.dispatch("updateChartData", this.bars);
-     this.getapi();
     // this.createData()
+  }
+
+  testfunction() {
+    let xheader = store.getters.Bgcolor;
+    console.log(xheader);
+    console.log("---testfunction---", this.offset);
+  }
+
+  drapi() {
     console.log(this.offset);
+    console.log(this.order);
+
+    let datax = store.getters.chartData;
+    let url = "https://api.detrading.co";
+    let v = "/api/v1";
+    // let link = "/order/trading_view/matcing/min/USD/BTC/1";
+    let link =
+      "/order/trading_view/matcing/" +
+      this.currency1 +
+      "/" +
+      this.currency2 +
+      "/min/1/offset/" +
+      this.offset +
+      "/limit/1000";
+    // console.log(link);
+    // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
+    // "/order/trading_view/matcing/min/USD/BTC/1";
+    Vue.axios
+      .get(url + v + link, { headers: store.getters.Header })
+      .then(response => {
+        let bars = response.data.res_data;
+        console.log(bars.length);
+        this.offset == 0 ? this.newData(bars) : (this.offset = this.order);
+        this.order += 1000;
+        // console.log(bars);
+        //  bars.length >= 1000 ? this.drapi() : this.socketconect();
+      })
+      .catch(c => {
+        // console.log(c);
+      });
+  }
+  upData(bars: any) {
+    let data = store.getters.chartData;
+    data.push(bars);
+    store.dispatch("updateChartData", data);
+    this.changePair();
   }
 
-  apix(offset : any){
-
+  newData(bars: any) {
+    store.dispatch("updateChartData", bars);
+    this.changePair();
   }
 
- 
   socketconect() {
     //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
@@ -77,7 +122,6 @@ export default class TradingViewComponent extends Vue {
     Matching.on("real_time", (data: any) => {
       //     console.log("xdata--real_time--", data);
       //   console.log(data);
-      //   this.getapi();
       this.newBlock(data["res_data"]);
     });
 
@@ -95,19 +139,9 @@ export default class TradingViewComponent extends Vue {
     let url = "https://api.detrading.co";
     let v = "/api/v1";
     let link = "/order/trading_view/matcing/min/USD/BTC/1";
-    let Headers = {
-      "Accept-language": "TH",
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " +
-        btoa(
-          "DE-TRADING-PROD:aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019"
-        )
-    };
-    // console.log(new Date().getTime());
-console.log(store.getters.bg);
+
     Vue.axios
-      .get(url + v + link, { headers: Headers })
+      .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
         // console.log(bars);
@@ -125,9 +159,6 @@ console.log(store.getters.bg);
   timeend = 1;
   time = 0;
   valume = 0;
-
-
-
   newBlock(data: any) {
     let datax = store.getters.chartData;
     // console.log("x-Data-time", this.time);
@@ -219,6 +250,9 @@ console.log(store.getters.bg);
   }
 
   mounted() {
+    this.drapi();
+    // this.getapi();
+    console.log("---mounted---", this.offset);
     this.feed = this.createFeed();
 
     TradingView.onready((configurationData: any) => {

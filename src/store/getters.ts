@@ -6,7 +6,7 @@ const getters = {
         return state.bg
     },
     Header(state:any){
-        return  state.Header
+        return  state.header
     }
 }
 
