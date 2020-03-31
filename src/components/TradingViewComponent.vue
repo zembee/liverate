@@ -44,7 +44,7 @@ export default class TradingViewComponent extends Vue {
     // console.log("---testfunction---", this.offset);
   }
 
-  drapi() {
+  async drapi() {
     // console.log(this.offset);
     // console.log(this.order);
 
@@ -63,42 +63,40 @@ export default class TradingViewComponent extends Vue {
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
-    Vue.axios
+    await Vue.axios
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
         // console.log(bars.length);
         this.offset == 0 ? this.newData(bars) : this.upData(bars);
-        this.offset = this.order ;
+        this.offset = this.order;
         this.order += 1000;
-        
-           bars.length >= 1000 ? this.drapi() : this.socketconect();
+
+        bars.length >= 1000 ? this.drapi() : this.socketconect();
       })
       .catch(c => {
         // console.log(c);
       });
   }
- async upData(bars: any) {
+  async upData(bars: any) {
     let data = store.getters.chartData;
     let concat = data.concat(bars);
     // data.push(bars);
 
     store.dispatch("updateChartData", concat);
-  await this.changePair();
+    await this.changePair();
   }
 
   async newData(bars: any) {
-        
     store.dispatch("updateChartData", bars);
-   await this.changePair();
-   
+    await this.changePair();
   }
 
   socketconect() {
     //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
-    const url = "https://api.detrading.co/api/v1";
+    const url = "https://api.dev.detrading.co/api/v1";
 
     // const username = 'de-trading-dev'
     const username = "DE-TRADING-PROD";
@@ -307,7 +305,7 @@ export default class TradingViewComponent extends Vue {
           "display_market_status",
           "header_compare",
           "edit_buttons_in_legend",
-          "symbol_info",
+
           "border_around_the_chart",
           "main_series_scale_menu",
           "star_some_intervals_by_default",
@@ -327,13 +325,15 @@ export default class TradingViewComponent extends Vue {
           "go_to_date",
           "compare_symbol",
           "border_around_the_chart",
-          "timezone_menu",
+          // "timezone_menu",
           "header_resolutions", //todo: przetestowac
           "control_bar", //todo: przetestowac
           "edit_buttons_in_legend", //todo: przetestowac
           "remove_library_container_border",
 
-          "study_dialog_search_control"
+          "study_dialog_search_control",
+
+          "symbol_info"
         ],
         studies_overrides: {
           "volume.volume.color.0": "#fe4761",
@@ -353,7 +353,7 @@ export default class TradingViewComponent extends Vue {
           "mainSeriesProperties.visible": false,
           "mainSeriesProperties.showPriceLine": false,
           "mainSeriesProperties.priceLineWidth": 1,
-          "mainSeriesProperties.lockScale": false,
+          "mainSeriesProperties.lockScalapie": false,
           "mainSeriesProperties.minTick": "default",
           "mainSeriesProperties.extendedHours": false,
           volumePaneSize: "tiny",
@@ -454,6 +454,7 @@ export default class TradingViewComponent extends Vue {
       var that = this;
 
       var update = function() {
+        console.log("update");
         if (that._requestsPending > 0) {
           return;
         }
@@ -605,10 +606,11 @@ export default class TradingViewComponent extends Vue {
           "240",
           "360",
           "720",
-          "1D",
-          "3D",
-          "1W",
-          "1M"
+          "1440",
+          "1D"
+          //  "3D",
+          // "1W",
+          // "1M"
         ],
         supports_marks: true,
         supports_timescale_marks: true,
@@ -747,8 +749,8 @@ export default class TradingViewComponent extends Vue {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style  lang="scss">
 #chart_container {
-  height: calc(100vh);
+   height: calc(100vh);
 }
 </style>

@@ -5,6 +5,7 @@
     return t[n].call(i.exports, i, i.exports, e), i.l = !0, i.exports
   }
 
+  console.log("Ok");
   var n = window.webpackJsonp;
   window.webpackJsonp = function (r, a, o) {
     for (var s, l, u, c = 0, f = []; c < r.length; c++) l = r[c], i[l] && f.push(i[l][0]), i[l] = 0;
@@ -13894,6 +13895,7 @@
             case"s":
               return r + "S";
             case"hour":
+            console.log(r);
               return "" + 60 * r;
             case"day":
               return r + "D";
@@ -14202,7 +14204,7 @@
             });
             var t = [{slug: "realtime", resolution: "1", chartType: 3, isMobile: !0}, {
                 slug: "1min",
-                resolution: "60"
+                resolution: "1"
               }, {slug: "5min", resolution: "5"}, {slug: "15min", resolution: "15"}, {
                 slug: "30min",
                 resolution: "30"

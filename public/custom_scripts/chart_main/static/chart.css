@@ -676,7 +676,14 @@ body, html {
 .header-chart-panel .left {
     float: left;
 }
+.left::before {
+    content: "BTC : USD";
+    color: #c5cbce;
+    padding-right: 8px;
+    top: 13px;
+    position: relative;
 
+}
 .header-chart-panel .chart-controls-bar-buttons.date-range-wrapper {
     position: static;
     display: inline-block;

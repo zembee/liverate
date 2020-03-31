@@ -9925,7 +9925,7 @@ var mobile, Colors = {
         case 0:
         case 60:
           return "1m";
-        case 7200:
+        case 180:
           return "3m";
         case 300:
           return "5m";
@@ -14630,7 +14630,7 @@ app.config(["$translateProvider", "$httpProvider", function (e, t) {
       case"0":
       case"60":
         return "1m";
-      case"7200":
+      case"180":
         return "3m";
       case"300":
         return "5m";
