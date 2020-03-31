@@ -8,8 +8,8 @@
     "serve-pro": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "developer": "pm2 serve npm --name 'trading-core-graph-dev' -- start",
-    "production": "pm2 serve-pro npm --name 'trading-core-graph-prod' -- start"
+    "developer": "pm2 start npm --name 'trading-core-graph-dev' -- start --mode dev",
+    "production": "pm2 start npm --name 'trading-core-graph-prod' -- start --mode production"
   },
   "dependencies": {
     "@types/socket.io-client": "^1.4.32",
