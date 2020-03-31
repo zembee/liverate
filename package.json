@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "vue-cli-service serve --port 5070 --mode dev",
-    "serve": "vue-cli-service serve --port 5070 --mode dev",
+    "start": "vue-cli-service serve --port 5070",
+    "serve-dev": "vue-cli-service serve --port 5070 --mode dev",
     "serve-pro": "vue-cli-service serve --port 5070 --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "developer": "pm2 start --name 'trading-core-graph-dev' npm -- start",
-    "production": "pm2 start --name 'trading-core-graph-prod' npm -- start"
+    "developer": "pm2 start --name 'trading-core-graph-dev' npm -- run serve-dev",
+    "production": "pm2 start --name 'trading-core-graph-prod' npm -- run serve-pro"
   },
   "dependencies": {
     "@types/socket.io-client": "^1.4.32",
