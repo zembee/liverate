@@ -1,15 +1,17 @@
+const url_api = process.env.VUE_APP_URL
+const name_api = process.env.VUE_APP_USER
+const password_api = process.env.VUE_APP_PASSWORD
 const state = {
-    chartData: null,
-    bg : '#313337',
-    header : {
-        "Accept-language": "TH",
-        "Content-Type": "application/json",
-        Authorization:
-          "Basic " +
-          btoa(
-            "DE-TRADING-PROD:aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019"
-          )
-      }
+  chartData: null,
+  bg: '#313337',
+  header: {
+    "Accept-language": "TH",
+    "Content-Type": "application/json",
+    Authorization:
+      "Basic " +
+      btoa(`${name_api}:${password_api}`
+      )
+  }
 }
 
 export default state
