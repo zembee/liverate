@@ -47,13 +47,9 @@ export default class TradingViewComponent extends Vue {
     // console.log("---testfunction---", this.offset);
   }
 
-<<<<<<< HEAD
-  async drapi() {
-=======
   drapi() {
     console.log('Ready!!');
     
->>>>>>> origin/master
     // console.log(this.offset);
     // console.log(this.order);
 
@@ -73,12 +69,8 @@ export default class TradingViewComponent extends Vue {
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
-<<<<<<< HEAD
-    await Vue.axios
-=======
 
     Vue.axios
->>>>>>> origin/master
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
@@ -111,11 +103,7 @@ export default class TradingViewComponent extends Vue {
     //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
-<<<<<<< HEAD
-    const url = "https://api.dev.detrading.co/api/v1";
-=======
     const url = url_api + "/api/v1";
->>>>>>> origin/master
 
     // const username = 'de-trading-dev'
     const username = name_api;
