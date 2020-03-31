@@ -48,14 +48,14 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
-    console.log('Ready!!');
-    
+    // console.log('Ready!!');
+
     // console.log(this.offset);
     // console.log(this.order);
 
     let datax = store.getters.chartData;
     let url = url_api;
-    console.log("url---------------", url);
+    // console.log("url---------------", url);
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
     let link =
@@ -74,7 +74,7 @@ export default class TradingViewComponent extends Vue {
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
-        console.log("--------------", response);
+        // console.log("--------------", response);
         this.offset == 0 ? this.newData(bars) : this.upData(bars);
         this.offset = this.order;
         this.order += 1000;
@@ -460,7 +460,7 @@ export default class TradingViewComponent extends Vue {
       var that = this;
 
       var update = function() {
-        console.log("update");
+        // console.log("update");
         if (that._requestsPending > 0) {
           return;
         }
@@ -757,6 +757,6 @@ export default class TradingViewComponent extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang="scss">
 #chart_container {
-   height: calc(100vh);
+  height: calc(100vh);
 }
 </style>
