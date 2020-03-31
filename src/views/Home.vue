@@ -7,17 +7,16 @@
 <script>
 import TradingViewComponent from "@/components/TradingViewComponent.vue";
 import { Component, Vue } from "vue-property-decorator";
-import state from '../store/state';
-import store from '../store'
+import state from "../store/state";
+import store from "../store";
+
 @Component({ components: { TradingViewComponent } })
 export default class Home extends Vue {
+
   constructor() {
     super();
-    //   context.commit('UPDATE_CHART_DATA', data);
-      localStorage.clear();
-     console.log("stateee",state.bg);
+    localStorage.clear();
     store.commit("updaetBG", "#fff");
-   
   }
 }
 </script>

@@ -11,6 +11,9 @@ import store from "../store";
 declare const TradingView: any;
 declare const $: any;
 const LastPrice = 1234.2365;
+const url_api = process.env.VUE_APP_URL;
+const name_api = process.env.VUE_APP_USER;
+const password_api = process.env.VUE_APP_PASSWORD;
 
 @Component
 export default class TradingViewComponent extends Vue {
@@ -45,11 +48,14 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
+    console.log('Ready!!');
+    
     // console.log(this.offset);
     // console.log(this.order);
 
     let datax = store.getters.chartData;
-    let url = "https://api.detrading.co";
+    let url = url_api;
+    console.log("url---------------", url);
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
     let link =
@@ -63,48 +69,46 @@ export default class TradingViewComponent extends Vue {
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
+
     Vue.axios
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
-        // console.log(bars.length);
+        console.log("--------------", response);
         this.offset == 0 ? this.newData(bars) : this.upData(bars);
-        this.offset = this.order ;
+        this.offset = this.order;
         this.order += 1000;
-        
-           bars.length >= 1000 ? this.drapi() : this.socketconect();
+
+        bars.length >= 1000 ? this.drapi() : this.socketconect();
       })
       .catch(c => {
         // console.log(c);
       });
   }
- async upData(bars: any) {
+  async upData(bars: any) {
     let data = store.getters.chartData;
     let concat = data.concat(bars);
     // data.push(bars);
 
     store.dispatch("updateChartData", concat);
-  await this.changePair();
+    await this.changePair();
   }
 
   async newData(bars: any) {
-        
     store.dispatch("updateChartData", bars);
-   await this.changePair();
-   
+    await this.changePair();
   }
 
   socketconect() {
     //   console.log("xdata--real_time--");
     const { Base64 } = require("js-base64");
     // const url = 'http://localhost:5119/api/v1'
-    const url = "https://api.detrading.co/api/v1";
+    const url = url_api + "/api/v1";
 
     // const username = 'de-trading-dev'
-    const username = "DE-TRADING-PROD";
+    const username = name_api;
     // const password = '0oMDPnx7HDYmbnTHKGNu?xdev_detrading@2019'
-    const password =
-      "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+    const password = password_api;
     const basicAuth = Base64.encode(username + ":" + password);
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDAxMWQ0MWI5JDEkMzdjMGYyZjQ2MzgyYzM1YWZhYzFkMTNiZDczM2UwMWZiMDcwZGRhNyIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEwIDEyOjU3OjA5IiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg2MzU4MjksImV4cCI6MTU4MTIyNzgyOX0.T3Q4HdW5xRTohlw_x2z9ShO60G51jrzXw4iyM9vlqqw'
     const token =
@@ -141,7 +145,7 @@ export default class TradingViewComponent extends Vue {
 
   getapi() {
     let datax = store.getters.chartData;
-    let url = "https://api.detrading.co";
+    let url = url_api;
     let v = "/api/v1";
     let link = "/order/trading_view/matcing/min/USD/BTC/1";
 
