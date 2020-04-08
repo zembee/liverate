@@ -7,7 +7,14 @@ const getters = {
     },
     Header(state:any){
         return  state.header
+    },
+    coin(state:any){
+        return state.coin;
+    },
+    to(state:any){
+        return state.to;
     }
+    
 }
 
 export default getters

@@ -11,7 +11,9 @@ const state = {
       "Basic " +
       btoa(`${name_api}:${password_api}`
       )
-  }
+  },
+  coin : '',
+  to : ''
 }
 
 export default state

@@ -15,9 +15,13 @@ export default class Home extends Vue {
 
   constructor() {
     super();
+    console.log(this.$route.params.coin);
+    console.log("ddd");
     localStorage.clear();
     store.commit("updaetBG", "#fff");
+       
   }
+
 }
 </script>
 

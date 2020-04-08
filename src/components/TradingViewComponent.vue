@@ -19,9 +19,10 @@ const password_api = process.env.VUE_APP_PASSWORD;
 export default class TradingViewComponent extends Vue {
   feed: any = null;
   chart: any = null;
-  currency1: string = "USD";
-  currency2: string = "BTC";
-
+  currency1: any ;
+  currency2: any ;
+  coin: any;
+  to: any;
   order: any = 1000;
   bars: any = [
     {
@@ -69,7 +70,7 @@ export default class TradingViewComponent extends Vue {
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
-
+    console.log(link);
     Vue.axios
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
@@ -125,9 +126,12 @@ export default class TradingViewComponent extends Vue {
         }
       }
     };
-
+ const to = this.currency1.toLowerCase();
+ const coin = this.currency2.toLowerCase();
+ const tocoin = `${to}_${coin}`;
+ console.log(tocoin);
     const io = require("socket.io-client");
-    const Matching = io.connect(`${url}/orders/matching/usd_btc`, configs);
+    const Matching = io.connect(`${url}/orders/matching/${tocoin}`, configs);
     Matching.on("real_time", (data: any) => {
       //     console.log("xdata--real_time--", data);
       //   console.log(data);
@@ -257,11 +261,19 @@ export default class TradingViewComponent extends Vue {
         .setSymbol(this.currency1 + ":" + this.currency2, () => {});
     }
   }
+  async getQuery() {
+    this.currency2 = await this.$route.query.coin;
+    this.currency1 =  await this.$route.query.to;
+  //  await store.commit("upCoin", this.coin);
+  //  await store.commit("upTo", this.to);
+    this.drapi();
+  }
 
   mounted() {
-    this.drapi();
+    this.getQuery();
     // this.getapi();
     this.feed = this.createFeed();
+    console.log(store.getters.coin);
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
@@ -612,8 +624,8 @@ export default class TradingViewComponent extends Vue {
           "240",
           "360",
           "720",
-          "1440",
-          "1D"
+          "1440"
+          // "1D"
           //  "3D",
           // "1W",
           // "1M"
