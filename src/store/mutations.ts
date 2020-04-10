@@ -6,7 +6,6 @@ const mutations = {
     state.bg = val;
   },
   upCoin(state: any, val: any) {
-      console.log("suuuuuuuu");
     state.coin = val;
   },
   upTo(state : any, val : any){

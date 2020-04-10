@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/:monny/:coin',
+    path: '/light',
     name: 'home',
     component: Home
   },
