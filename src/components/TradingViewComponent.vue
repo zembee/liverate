@@ -70,7 +70,7 @@ export default class TradingViewComponent extends Vue {
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
-    console.log(link);
+    // console.log(link);
     Vue.axios
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
@@ -101,17 +101,14 @@ export default class TradingViewComponent extends Vue {
   }
 
   socketconect() {
-    //   console.log("xdata--real_time--");
+    // console.log("ok connect");
+     const to = this.currency1;
+    const coin = this.currency2;
     const { Base64 } = require("js-base64");
-    // const url = 'http://localhost:5119/api/v1'
     const url = url_api + "/api/v1";
-
-    // const username = 'de-trading-dev'
     const username = name_api;
-    // const password = '0oMDPnx7HDYmbnTHKGNu?xdev_detrading@2019'
     const password = password_api;
     const basicAuth = Base64.encode(username + ":" + password);
-    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDAxMWQ0MWI5JDEkMzdjMGYyZjQ2MzgyYzM1YWZhYzFkMTNiZDczM2UwMWZiMDcwZGRhNyIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEwIDEyOjU3OjA5IiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg2MzU4MjksImV4cCI6MTU4MTIyNzgyOX0.T3Q4HdW5xRTohlw_x2z9ShO60G51jrzXw4iyM9vlqqw'
     const token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJzaGExJDg1YzQ5ZjU3JDEkYmI2YzZhZDZlZDM3ZjljM2ZhNTA0MzY1Zjg2N2FkODc3ZjEwZGJmMCIsImxvZ2luX3R5cGUiOiJOT1JNQUwiLCJ0b2tlbl90eXBlIjoiV0VCIiwidG9rZW5fY3JlYXRlX2RhdGUiOiIyMDIwLTAxLTEyIDAzOjMwOjExIiwidGltZXpvbmUiOiIrMDc6MDAiLCJpYXQiOjE1Nzg3NzQ2MTEsImV4cCI6MTU3OTM3OTQxMX0.LGKQQa8pXif8OQSQUdagiHVM3yJcn8Gp3NrdSAic4iQ";
     const language = "EN";
@@ -121,22 +118,28 @@ export default class TradingViewComponent extends Vue {
           extraHeaders: {
             Authorization: `Basic ${basicAuth}`,
             "x-access-token": token,
-            "accept-language": language
+            "accept-language": language,
+             "x-access-coin-aim": `${coin}/${to}`, 
           }
         }
       }
     };
- const to = this.currency1.toLowerCase();
- const coin = this.currency2.toLowerCase();
+
  const tocoin = `${to}_${coin}`;
- console.log(tocoin);
-    const io = require("socket.io-client");
-    const Matching = io.connect(`${url}/orders/matching/${tocoin}`, configs);
-    Matching.on("real_time", (data: any) => {
-      //     console.log("xdata--real_time--", data);
+const io = require("socket.io-client");
+const Matching = io.connect(`${url}/orders/matching`, configs);
+const gatewayListenALLItems = `${coin}/${to}/REALTIME`;
+const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ลงขายหรือซื้อ
+// console.log(gatewayListenALLItems);
+
+
+    Matching.on(gatewayListenALLItems, (data: any) => {
+          //  console.log("xdata--real_time--", data);
       //   console.log(data);
       this.newBlock(data["res_data"]);
     });
+
+
 
     //1585149840000
     //1508313600000
@@ -264,6 +267,9 @@ export default class TradingViewComponent extends Vue {
   async getQuery() {
     this.currency2 = await this.$route.query.coin;
     this.currency1 =  await this.$route.query.to;
+
+    //  this.currency2 = "BTC";
+    // this.currency1 =  "USD"
   //  await store.commit("upCoin", this.coin);
   //  await store.commit("upTo", this.to);
     this.drapi();
@@ -273,7 +279,6 @@ export default class TradingViewComponent extends Vue {
     this.getQuery();
     // this.getapi();
     this.feed = this.createFeed();
-    console.log(store.getters.coin);
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
