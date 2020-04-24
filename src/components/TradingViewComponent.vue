@@ -50,7 +50,7 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
-    console.log('Ready!!');
+    // console.log('Ready!!');
 
     // console.log(this.offset);
     // console.log(this.order);
@@ -108,9 +108,6 @@ let firstlink =
     // let concat = data.concat(bars);
       let xx = m.concat(data);
 
-  
-  console.log(m);
-  console.log(newbloc);
    await store.dispatch("updateChartData", xx);
   await this.changePair();
   }
@@ -266,11 +263,11 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     }
   }
   async getQuery() {
-    // this.currency2 = await this.$route.query.coin;
-    // this.currency1 =  await this.$route.query.to;
+    this.currency2 = await this.$route.query.coin;
+    this.currency1 =  await this.$route.query.to;
 
-     this.currency2 = "BTC";
-    this.currency1 =  "USD"
+    //  this.currency2 = "BTC";
+    // this.currency1 =  "USD"
   //  await store.commit("upCoin", this.coin);
   //  await store.commit("upTo", this.to);
     this.drapi();
