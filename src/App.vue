@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <router-view/>
+      <!-- <div id="pansymbol"></div> -->
+   
   </div>
 </template>
 
@@ -15,4 +17,22 @@
 body{
   margin: 0;
 }
+
+// .left::before {
+//     content: "BTC/USD";
+//     color: #c5cbce;
+//     padding-right: 8px;
+//     top: 13px;
+//     position: relative;
+
+// }
+#pansymbol::before {
+    content: "BTC/USD";
+    color: #000000;
+    padding-right: 8px;
+    top: 13px;
+    position: relative;
+
+}
+
 </style>

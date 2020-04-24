@@ -1,5 +1,6 @@
 <template>
   <div id="chart_container"></div>
+
 </template>
 
 <script lang="ts">
@@ -49,7 +50,7 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
-    // console.log('Ready!!');
+    console.log('Ready!!');
 
     // console.log(this.offset);
     // console.log(this.order);
@@ -59,40 +60,59 @@ export default class TradingViewComponent extends Vue {
     // console.log("url---------------", url);
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
+let firstlink = 
+    "/order/trading_view/matcing/" +
+      this.currency1 +
+      "/" +
+      this.currency2 +
+      "/min/1/offset/0/limit/3";
+
     let link =
       "/order/trading_view/matcing/" +
       this.currency1 +
       "/" +
       this.currency2 +
-      "/min/1/offset/" +
+      "/min/1/offset/-" +
       this.offset +
       "/limit/1000";
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
-    // console.log(link);
+    //  console.log(link);
     Vue.axios
       .get(url + v + link, { headers: store.getters.Header })
       .then(response => {
         let bars = response.data.res_data;
-        // console.log("--------------", response);
+        //  console.log("--------------", response);
         this.offset == 0 ? this.newData(bars) : this.upData(bars);
         this.offset = this.order;
         this.order += 1000;
 
-        bars.length >= 1000 ? this.drapi() : this.socketconect();
+        // if(this.order <= 30){
+        //   this.drapi();
+        // }
+        setTimeout(() => {
+                  //  bars.length >= 10 ? this.drapi() : null;
+                      bars.length >= 1000 ? this.drapi() : this.socketconect();
+        }, 5000);
+
+        // console.log("ok2");
+        
       })
       .catch(c => {
-        // console.log(c);
       });
   }
   async upData(bars: any) {
+    let m = bars ;
     let data = store.getters.chartData;
-    let concat = data.concat(bars);
-    // data.push(bars);
+    // let concat = data.concat(bars);
+      let xx = m.concat(data);
 
-    store.dispatch("updateChartData", concat);
-    await this.changePair();
+  
+  console.log(m);
+  console.log(newbloc);
+   await store.dispatch("updateChartData", xx);
+  await this.changePair();
   }
 
   async newData(bars: any) {
@@ -150,26 +170,7 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     return datum.getTime() / 1000;
   }
 
-  getapi() {
-    let datax = store.getters.chartData;
-    let url = url_api;
-    let v = "/api/v1";
-    let link = "/order/trading_view/matcing/min/USD/BTC/1";
-
-    Vue.axios
-      .get(url + v + link, { headers: store.getters.Header })
-      .then(response => {
-        let bars = response.data.res_data;
-        // console.log(bars);
-        store.dispatch("updateChartData", bars);
-        this.changePair();
-        this.socketconect();
-        // console.log("xdata-", datax);
-      })
-      .catch(c => {
-        // console.log(c);
-      });
-  }
+ 
 
   timestart = 1;
   timeend = 1;
@@ -265,11 +266,11 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     }
   }
   async getQuery() {
-    this.currency2 = await this.$route.query.coin;
-    this.currency1 =  await this.$route.query.to;
+    // this.currency2 = await this.$route.query.coin;
+    // this.currency1 =  await this.$route.query.to;
 
-    //  this.currency2 = "BTC";
-    // this.currency1 =  "USD"
+     this.currency2 = "BTC";
+    this.currency1 =  "USD"
   //  await store.commit("upCoin", this.coin);
   //  await store.commit("upTo", this.to);
     this.drapi();
@@ -282,7 +283,7 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
-        fullscreen: false,
+        fullscreen: true,
         autosize: true,
         symbol: this.currency1 + ":" + this.currency2,
         container_id: "chart_container",
@@ -299,7 +300,7 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
         // timeframe:'',//todo: na koncu
         toolbar_bg: store.getters.Bgcolor,
         // saved_data: this.savedData,
-        allow_symbol_change: false,
+        allow_symbol_change: true,
         time_frames: [
           { text: "1y", resolution: "1W" },
           { text: "6m", resolution: "3D" },
@@ -348,7 +349,7 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
           "go_to_date",
           "compare_symbol",
           "border_around_the_chart",
-          // "timezone_menu",
+          "timezone_menu",
           "header_resolutions", //todo: przetestowac
           "control_bar", //todo: przetestowac
           "edit_buttons_in_legend", //todo: przetestowac
@@ -490,6 +491,8 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
             (new Date().valueOf() / 1000).toFixed()
           );
 
+
+
           //	BEWARE: please note we really need 2 bars, not the only last one
           //	see the explanation below. `10` is the `large enough` value to work around holidays
           var datesRangeLeft =
@@ -498,6 +501,8 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
           that._requestsPending++;
 
           (function(_subscriptionRecord) {
+         
+            
             // eslint-disable-line
             that._datafeed.getBars(
               _subscriptionRecord.symbolInfo,
@@ -658,13 +663,17 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
       event: any,
       argument: any
     ) {
+    
+
       if (this._callbacks.hasOwnProperty(event)) {
         var callbacksChain = this._callbacks[event];
         for (var i = 0; i < callbacksChain.length; ++i) {
           callbacksChain[i](argument);
+        
         }
 
         this._callbacks[event] = [];
+
       }
     };
 
@@ -699,8 +708,11 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     Datafeed.Container.prototype.resolveSymbol = function(
       symbolName: any,
       onSymbolResolvedCallback: any,
-      onResolveErrorCallback: any
+      onResolveErrorCallback: any,
+      onGrayedObjectClicked:any
+
     ) {
+      
       this._logMessage("GOWNO :: resolve symbol " + symbolName);
       Promise.resolve().then(() => {
         this._logMessage(
@@ -709,6 +721,8 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
             ":" +
             this.currency2
         );
+     
+
         onSymbolResolvedCallback({
           name: this.currency1 + ":" + this.currency2,
           timezone: "Asia/Bangkok",
@@ -739,9 +753,11 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
       onErrorCallback: any
     ) {
       if (rangeStartDate > 0 && (rangeStartDate + "").length > 10) {
+        
         throw new Error();
       }
-      onDataCallback([], { noData: true });
+      onDataCallback([], { noData: true});
+
       //onDataCallback(bars, { noData: true , nextTime: data.nb || data.nextTime });
     };
 
@@ -754,6 +770,8 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     ) {
       store.getters.chartData.forEach(function(bar: any) {
         // in subscribeBars
+      
+        
         onRealtimeCallback(bar);
       });
       this.on("pair_change", function() {
