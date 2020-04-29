@@ -91,7 +91,7 @@ export default class TradingViewComponent extends Vue {
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
     //  console.log(link);
-    console.log("Url--->", url + v + link);
+    // console.log("Url--->", url + v + link);
     Vue.axios
       .get(url + v + link, { headers: this.header })
       .then(response => {
@@ -100,7 +100,7 @@ export default class TradingViewComponent extends Vue {
         this.offset == 0 ? this.newData(bars['data']) : this.upData(bars['data']);
         this.offset = this.order;
       
-         console.log(bars);
+        //  console.log(bars);
         this.fullcount == 0 ? this.fullcount = bars['full_count'] : null ;
         //  bars.length >= 10 ? this.drapi() : null;
   

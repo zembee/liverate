@@ -5,8 +5,9 @@ var foo = document.getElementById("foo");
 var array = url.split("&");
 var dec = decodeURIComponent(array[1]);
 var res = dec.replace("symbol=", "");
-var res2 = res.replace(":", "/");
-
+var btc = res.split(":");
+// var res2 = res.replace(":", "/");
+var res2 = btc[1] + "/ " + btc[0];
 
 
 
