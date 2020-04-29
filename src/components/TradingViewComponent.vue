@@ -11,15 +11,15 @@ import store from "../store";
 declare const TradingView: any;
 declare const $: any;
 const LastPrice = 1234.2365;
-// const url_api = process.env.VUE_APP_URL;
-// const name_api = process.env.VUE_APP_USER;
-// const password_api = process.env.VUE_APP_PASSWORD;
+const url_api = process.env.VUE_APP_URL;
+const name_api = process.env.VUE_APP_USER;
+const password_api = process.env.VUE_APP_PASSWORD;
 
 
 // -> prod
-const url_api = 'https://api.detrading.co';
-const name_api = 'DE-TRADING-PROD';
-const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+// const url_api = 'https://api.detrading.co';
+// const name_api = 'DE-TRADING-PROD';
+// const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
 
 @Component
 export default class TradingViewComponent extends Vue {
@@ -100,7 +100,7 @@ export default class TradingViewComponent extends Vue {
         this.offset == 0 ? this.newData(bars['data']) : this.upData(bars['data']);
         this.offset = this.order;
       
-          // console.log(bars);
+         console.log(bars);
         this.fullcount == 0 ? this.fullcount = bars['full_count'] : null ;
         //  bars.length >= 10 ? this.drapi() : null;
   
