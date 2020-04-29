@@ -1,6 +1,5 @@
 <template>
   <div id="chart_container"></div>
-
 </template>
 
 <script lang="ts">
@@ -12,18 +11,33 @@ import store from "../store";
 declare const TradingView: any;
 declare const $: any;
 const LastPrice = 1234.2365;
-const url_api = process.env.VUE_APP_URL;
-const name_api = process.env.VUE_APP_USER;
-const password_api = process.env.VUE_APP_PASSWORD;
+// const url_api = process.env.VUE_APP_URL;
+// const name_api = process.env.VUE_APP_USER;
+// const password_api = process.env.VUE_APP_PASSWORD;
+
+
+// -> prod
+const url_api = 'https://api.detrading.co';
+const name_api = 'DE-TRADING-PROD';
+const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
 
 @Component
 export default class TradingViewComponent extends Vue {
   feed: any = null;
   chart: any = null;
-  currency1: any ;
-  currency2: any ;
+  currency1: any;
+  currency2: any;
   coin: any;
+  fullcount:any = 0;
   to: any;
+  header:any = {
+    "Accept-language": "TH",
+    "Content-Type": "application/json",
+    Authorization:
+      "Basic " +
+      btoa(`${name_api}:${password_api}`
+      )
+  };
   order: any = 1000;
   bars: any = [
     {
@@ -40,6 +54,8 @@ export default class TradingViewComponent extends Vue {
   constructor() {
     super();
     store.dispatch("updateChartData", this.bars);
+    
+    
     // this.createData()
   }
 
@@ -50,18 +66,14 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
-    // console.log('Ready!!');
-
-    // console.log(this.offset);
-    // console.log(this.order);
 
     let datax = store.getters.chartData;
     let url = url_api;
     // console.log("url---------------", url);
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
-let firstlink = 
-    "/order/trading_view/matcing/" +
+    let firstlink =
+      "/order/trading_view/matcing/" +
       this.currency1 +
       "/" +
       this.currency2 +
@@ -73,43 +85,44 @@ let firstlink =
       "/" +
       this.currency2 +
       "/min/1/offset/-" +
-      this.offset +
+       this.offset +
       "/limit/1000";
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
     //  console.log(link);
+    console.log("Url--->", url + v + link);
     Vue.axios
-      .get(url + v + link, { headers: store.getters.Header })
+      .get(url + v + link, { headers: this.header })
       .then(response => {
-        let bars = response.data.res_data;
+        const bars = response.data.res_data;
         //  console.log("--------------", response);
-        this.offset == 0 ? this.newData(bars) : this.upData(bars);
+        this.offset == 0 ? this.newData(bars['data']) : this.upData(bars['data']);
         this.offset = this.order;
-        this.order += 1000;
-
-        // if(this.order <= 30){
-        //   this.drapi();
-        // }
-        setTimeout(() => {
-                  //  bars.length >= 10 ? this.drapi() : null;
-                      bars.length >= 1000 ? this.drapi() : this.socketconect();
-        }, 5000);
+      
+          // console.log(bars);
+        this.fullcount == 0 ? this.fullcount = bars['full_count'] : null ;
+        //  bars.length >= 10 ? this.drapi() : null;
+  
+              this.order < this.fullcount ? this.drapi() : this.socketconect();
+                this.order += 1000;
+      
+     
+        // console.log( bars.length );
 
         // console.log("ok2");
-        
       })
-      .catch(c => {
-      });
+      .catch(c => {});
   }
   async upData(bars: any) {
-    let m = bars ;
+    let m = bars;
     let data = store.getters.chartData;
     // let concat = data.concat(bars);
-      let xx = m.concat(data);
+    let xx = m.concat(data);
+// console.log(data);
 
-   await store.dispatch("updateChartData", xx);
-  await this.changePair();
+    await store.dispatch("updateChartData", xx);
+    await this.changePair();
   }
 
   async newData(bars: any) {
@@ -119,7 +132,7 @@ let firstlink =
 
   socketconect() {
     // console.log("ok connect");
-     const to = this.currency1;
+    const to = this.currency1;
     const coin = this.currency2;
     const { Base64 } = require("js-base64");
     const url = url_api + "/api/v1";
@@ -136,27 +149,24 @@ let firstlink =
             Authorization: `Basic ${basicAuth}`,
             "x-access-token": token,
             "accept-language": language,
-             "x-access-coin-aim": `${coin}/${to}`, 
+            "x-access-coin-aim": `${coin}/${to}`
           }
         }
       }
     };
 
- const tocoin = `${to}_${coin}`;
-const io = require("socket.io-client");
-const Matching = io.connect(`${url}/orders/matching`, configs);
-const gatewayListenALLItems = `${coin}/${to}/REALTIME`;
-const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ลงขายหรือซื้อ
-// console.log(gatewayListenALLItems);
-
+    const tocoin = `${to}_${coin}`;
+    const io = require("socket.io-client");
+    const Matching = io.connect(`${url}/orders/matching`, configs);
+    const gatewayListenALLItems = `${coin}/${to}/REALTIME`;
+    const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ลงขายหรือซื้อ
+    // console.log(gatewayListenALLItems);
 
     Matching.on(gatewayListenALLItems, (data: any) => {
-          //  console.log("xdata--real_time--", data);
+      //  console.log("xdata--real_time--", data);
       //   console.log(data);
       this.newBlock(data["res_data"]);
     });
-
-
 
     //1585149840000
     //1508313600000
@@ -166,8 +176,6 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     var datum = new Date();
     return datum.getTime() / 1000;
   }
-
- 
 
   timestart = 1;
   timeend = 1;
@@ -264,12 +272,12 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
   }
   async getQuery() {
     this.currency2 = await this.$route.query.coin;
-    this.currency1 =  await this.$route.query.to;
+    this.currency1 = await this.$route.query.to;
 
     //  this.currency2 = "BTC";
     // this.currency1 =  "USD"
-  //  await store.commit("upCoin", this.coin);
-  //  await store.commit("upTo", this.to);
+    //  await store.commit("upCoin", this.coin);
+    //  await store.commit("upTo", this.to);
     this.drapi();
   }
 
@@ -488,8 +496,6 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
             (new Date().valueOf() / 1000).toFixed()
           );
 
-
-
           //	BEWARE: please note we really need 2 bars, not the only last one
           //	see the explanation below. `10` is the `large enough` value to work around holidays
           var datesRangeLeft =
@@ -498,8 +504,6 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
           that._requestsPending++;
 
           (function(_subscriptionRecord) {
-         
-            
             // eslint-disable-line
             that._datafeed.getBars(
               _subscriptionRecord.symbolInfo,
@@ -660,17 +664,13 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
       event: any,
       argument: any
     ) {
-    
-
       if (this._callbacks.hasOwnProperty(event)) {
         var callbacksChain = this._callbacks[event];
         for (var i = 0; i < callbacksChain.length; ++i) {
           callbacksChain[i](argument);
-        
         }
 
         this._callbacks[event] = [];
-
       }
     };
 
@@ -706,10 +706,8 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
       symbolName: any,
       onSymbolResolvedCallback: any,
       onResolveErrorCallback: any,
-      onGrayedObjectClicked:any
-
+      onGrayedObjectClicked: any
     ) {
-      
       this._logMessage("GOWNO :: resolve symbol " + symbolName);
       Promise.resolve().then(() => {
         this._logMessage(
@@ -718,7 +716,6 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
             ":" +
             this.currency2
         );
-     
 
         onSymbolResolvedCallback({
           name: this.currency1 + ":" + this.currency2,
@@ -750,10 +747,9 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
       onErrorCallback: any
     ) {
       if (rangeStartDate > 0 && (rangeStartDate + "").length > 10) {
-        
         throw new Error();
       }
-      onDataCallback([], { noData: true});
+      onDataCallback([], { noData: true });
 
       //onDataCallback(bars, { noData: true , nextTime: data.nb || data.nextTime });
     };
@@ -767,8 +763,7 @@ const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ล�
     ) {
       store.getters.chartData.forEach(function(bar: any) {
         // in subscribeBars
-      
-        
+
         onRealtimeCallback(bar);
       });
       this.on("pair_change", function() {
