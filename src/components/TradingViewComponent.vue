@@ -11,9 +11,15 @@ import store from "../store";
 declare const TradingView: any;
 declare const $: any;
 const LastPrice = 1234.2365;
-const url_api = process.env.VUE_APP_URL;
-const name_api = process.env.VUE_APP_USER;
-const password_api = process.env.VUE_APP_PASSWORD;
+// const url_api = process.env.VUE_APP_URL;
+// const name_api = process.env.VUE_APP_USER;
+// const password_api = process.env.VUE_APP_PASSWORD;
+
+
+//-> div
+const url_api = 'https://api.dev.detrading.co';
+const name_api = 'de-trading-dev';
+const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
 
 
 // -> prod
