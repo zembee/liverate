@@ -74,16 +74,16 @@ export default class TradingViewComponent extends Vue {
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
     let firstlink =
       "/order/trading_view/matcing/" +
-      this.currency1 +
-      "/" +
       this.currency2 +
+      "/" +
+      this.currency1 +
       "/min/1/offset/0/limit/3";
 
     let link =
       "/order/trading_view/matcing/" +
-      this.currency1 +
-      "/" +
       this.currency2 +
+      "/" +
+      this.currency1 +
       "/min/1/offset/-" +
        this.offset +
       "/limit/1000";
