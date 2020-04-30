@@ -96,7 +96,6 @@ export default class TradingViewComponent extends Vue {
       .get(url + v + link, { headers: this.header })
       .then(response => {
         const bars = response.data.res_data;
-        //  console.log("--------------", response);
         this.offset == 0 ? this.newData(bars['data']) : this.upData(bars['data']);
         this.offset = this.order;
       
@@ -104,8 +103,8 @@ export default class TradingViewComponent extends Vue {
         this.fullcount == 0 ? this.fullcount = bars['full_count'] : null ;
         //  bars.length >= 10 ? this.drapi() : null;
   
-              this.order < this.fullcount ? this.drapi() : this.socketconect();
-                this.order += 1000;
+              this.order < this.fullcount ? this.delay() : this.socketconect();
+   
       
      
         // console.log( bars.length );
@@ -114,6 +113,13 @@ export default class TradingViewComponent extends Vue {
       })
       .catch(c => {});
   }
+
+delay(){
+  setTimeout(() => {
+    this.drapi();
+    this.order += 1000;
+  }, 1000);
+}
   async upData(bars: any) {
     let m = bars;
     let data = store.getters.chartData;
