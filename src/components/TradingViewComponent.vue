@@ -350,7 +350,9 @@ export default class TradingViewComponent extends Vue {
           "star_some_intervals_by_default",
           "datasource_copypaste",
           "right_bar_stays_on_scroll",
-          "context_menus"
+          "context_menus",
+            "remove_library_container_border",
+
         ],
         enabled_features: [
           "dont_show_boolean_study_arguments",
@@ -368,7 +370,7 @@ export default class TradingViewComponent extends Vue {
           "header_resolutions", //todo: przetestowac
           "control_bar", //todo: przetestowac
           "edit_buttons_in_legend", //todo: przetestowac
-          "remove_library_container_border",
+        
 
           "study_dialog_search_control",
 
