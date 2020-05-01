@@ -1753,3 +1753,12 @@ div.tooltip {
 .onchart-tv-logo .text .logo-highlighted {
     text-decoration: none;
 }
+
+
+
+
+@media only screen and (max-width: 567px) {
+    .pane-legend{
+        margin-left: 40px;
+        }
+}
