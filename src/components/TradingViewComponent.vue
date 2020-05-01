@@ -15,17 +15,16 @@ const LastPrice = 1234.2365;
 // const name_api = process.env.VUE_APP_USER;
 // const password_api = process.env.VUE_APP_PASSWORD;
 
-
 //-> div
 // const url_api = 'https://api.dev.detrading.co';
 // const name_api = 'de-trading-dev';
 // const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
 
-
 // -> prod
-const url_api = 'https://api.detrading.co';
-const name_api = 'DE-TRADING-PROD';
-const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQFINALDETRADING^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+const url_api = "https://api.detrading.co";
+const name_api = "DE-TRADING-PROD";
+const password_api =
+  "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQFINALDETRADING^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
 
 @Component
 export default class TradingViewComponent extends Vue {
@@ -34,15 +33,12 @@ export default class TradingViewComponent extends Vue {
   currency1: any;
   currency2: any;
   coin: any;
-  fullcount:any = 0;
+  fullcount: any = 0;
   to: any;
-  header:any = {
+  header: any = {
     "Accept-language": "TH",
     "Content-Type": "application/json",
-    Authorization:
-      "Basic " +
-      btoa(`${name_api}:${password_api}`
-      )
+    Authorization: "Basic " + btoa(`${name_api}:${password_api}`)
   };
   order: any = 1000;
   bars: any = [
@@ -60,8 +56,7 @@ export default class TradingViewComponent extends Vue {
   constructor() {
     super();
     store.dispatch("updateChartData", this.bars);
-    
-    
+
     // this.createData()
   }
 
@@ -72,7 +67,6 @@ export default class TradingViewComponent extends Vue {
   }
 
   drapi() {
-
     let datax = store.getters.chartData;
     let url = url_api;
     // console.log("url---------------", url);
@@ -91,7 +85,7 @@ export default class TradingViewComponent extends Vue {
       "/" +
       this.currency1 +
       "/min/1/offset/-" +
-       this.offset +
+      this.offset +
       "/limit/1000";
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
@@ -102,17 +96,17 @@ export default class TradingViewComponent extends Vue {
       .get(url + v + link, { headers: this.header })
       .then(response => {
         const bars = response.data.res_data;
-        this.offset == 0 ? this.newData(bars['data']) : this.upData(bars['data']);
+        this.offset == 0
+          ? this.newData(bars["data"])
+          : this.upData(bars["data"]);
         this.offset = this.order;
-      
+
         //  console.log(bars);
-        this.fullcount == 0 ? this.fullcount = bars['full_count'] : null ;
+        this.fullcount == 0 ? (this.fullcount = bars["full_count"]) : null;
         //  bars.length >= 10 ? this.drapi() : null;
-  
-              this.order < this.fullcount ? this.delay() : this.socketconect();
-   
-      
-     
+
+        this.order < this.fullcount ? this.delay() : this.socketconect();
+
         // console.log( bars.length );
 
         // console.log("ok2");
@@ -120,18 +114,18 @@ export default class TradingViewComponent extends Vue {
       .catch(c => {});
   }
 
-delay(){
-  setTimeout(() => {
-    this.drapi();
-    this.order += 1000;
-  }, 1500);
-}
+  delay() {
+    setTimeout(() => {
+      this.drapi();
+      this.order += 1000;
+    }, 1500);
+  }
   async upData(bars: any) {
     let m = bars;
     let data = store.getters.chartData;
     // let concat = data.concat(bars);
     let xx = m.concat(data);
-// console.log(data);
+    // console.log(data);
 
     await store.dispatch("updateChartData", xx);
     await this.changePair();
@@ -282,20 +276,22 @@ delay(){
         .setSymbol(this.currency1 + ":" + this.currency2, () => {});
     }
   }
-   getQuery() {
-    console.log("prod -> 0.001");
+  getQuery() {
+    console.log("prod -> 0.002");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
-     this.currency2 = "BTC";
-    this.currency1 =  "USD"
+    // console.log('The id xxxx: ' + this.$route.params.coin);
+    //  console.log('The id ppppppp: ' + this.$route.params.price);
+
+    this.currency2 = this.$route.params.coin;
+    this.currency1 = this.$route.params.price;
     //  await store.commit("upCoin", this.coin);
     //  await store.commit("upTo", this.to);
     this.drapi();
   }
 
   mounted() {
-
     this.getQuery();
     // this.getapi();
     this.feed = this.createFeed();

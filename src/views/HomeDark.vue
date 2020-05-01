@@ -17,14 +17,10 @@ export default class Home extends Vue {
 
   constructor() {
     super();
-    //   context.commit('UPDATE_CHART_DATA', data);
     localStorage.clear();
-    // this.coin = this.$route.query.coin;
-    // this.to = this.$route.query.to;
-
     store.commit("updaetBG", "#313337");
-     console.log('The id is: ' + this.$route.params.coin);
   }
+
 }
 </script>
 

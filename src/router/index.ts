@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/light',
+    path: '/light/:coin/:price',
     name: 'home',
     component: Home
   },
@@ -15,8 +15,10 @@ const routes = [
     name : 'dark',
     component  :dark
   }
-]
+];
 
+
+// const router = new VueRouter({routes});
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
