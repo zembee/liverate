@@ -11,7 +11,7 @@ const routes = [
     component: Home
   },
   {
-    path : '/dark',
+    path : '/dark/:coin/:price',
     name : 'dark',
     component  :dark
   }

@@ -14,9 +14,6 @@ export default class Home extends Vue {
   coin: any = "BTC";
   to: any = "USD";
 
-  mounted() {
-
-  }
 
   constructor() {
     super();
@@ -26,6 +23,7 @@ export default class Home extends Vue {
     // this.to = this.$route.query.to;
 
     store.commit("updaetBG", "#313337");
+     console.log('The id is: ' + this.$route.params.coin);
   }
 }
 </script>

@@ -282,13 +282,13 @@ delay(){
         .setSymbol(this.currency1 + ":" + this.currency2, () => {});
     }
   }
-  async getQuery() {
+   getQuery() {
     console.log("prod -> 0.001");
-    this.currency2 = await this.$route.query.coin;
-    this.currency1 = await this.$route.query.to;
+    // this.currency2 = await this.$route.query.coin;
+    // this.currency1 = await this.$route.query.to;
 
-    //  this.currency2 = "BTC";
-    // this.currency1 =  "USD"
+     this.currency2 = "BTC";
+    this.currency1 =  "USD"
     //  await store.commit("upCoin", this.coin);
     //  await store.commit("upTo", this.to);
     this.drapi();

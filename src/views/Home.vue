@@ -19,6 +19,9 @@ export default class Home extends Vue {
     store.commit("updaetBG", "#fff");
        
   }
+  mounted() {
+    console.log("ddd");
+  }
 
 }
 </script>
