@@ -25,7 +25,7 @@ const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
 // -> prod
 // const url_api = 'https://api.detrading.co';
 // const name_api = 'DE-TRADING-PROD';
-// const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQ^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+// const password_api = "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQFINALDETRADING^Wiuz8k*k<CiEy?xPROD_DETRADING@2019;
 
 @Component
 export default class TradingViewComponent extends Vue {
@@ -124,7 +124,7 @@ delay(){
   setTimeout(() => {
     this.drapi();
     this.order += 1000;
-  }, 1000);
+  }, 1500);
 }
   async upData(bars: any) {
     let m = bars;
