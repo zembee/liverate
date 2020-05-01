@@ -283,6 +283,7 @@ delay(){
     }
   }
   async getQuery() {
+    console.log("prod -> 0.001");
     this.currency2 = await this.$route.query.coin;
     this.currency1 = await this.$route.query.to;
 
@@ -294,6 +295,7 @@ delay(){
   }
 
   mounted() {
+
     this.getQuery();
     // this.getapi();
     this.feed = this.createFeed();
