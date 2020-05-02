@@ -392,7 +392,7 @@ export default class TradingViewComponent extends Vue {
           "mainSeriesProperties.showCountdown": false,
           "scalesProperties.showSeriesLastValue": true,
           "mainSeriesProperties.visible": false,
-          "mainSeriesProperties.showPriceLine": false,
+          "mainSeriesProperties.showPriceLine": true,
           "mainSeriesProperties.priceLineWidth": 1,
           "mainSeriesProperties.lockScalapie": false,
           "mainSeriesProperties.minTick": "default",
