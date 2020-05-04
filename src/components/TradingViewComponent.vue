@@ -16,15 +16,15 @@ const LastPrice = 1234.2365;
 // const password_api = process.env.VUE_APP_PASSWORD;
 
 // -> dev
-// const url_api = 'https://api.dev.detrading.co';
-// const name_api = 'de-trading-dev';
-// const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
+const url_api = 'https://api.dev.detrading.co';
+const name_api = 'de-trading-dev';
+const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
 
 // -> prod
-const url_api = "https://api.detrading.co";
-const name_api = "DE-TRADING-PROD";
-const password_api =
-  "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQFINALDETRADING^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
+// const url_api = "https://api.detrading.co";
+// const name_api = "DE-TRADING-PROD";
+// const password_api =
+//   "aG5iF9To5ft2F06LJtEPY9AxeSFMqKWRjH2XTv1>ilAQUB'NW+EhTHQFINALDETRADING^Wiuz8k*k<CiEy?xPROD_DETRADING@2019";
 
 @Component
 export default class TradingViewComponent extends Vue {
@@ -270,7 +270,7 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("prod -> 0.004");
+    console.log("dev -> 0.004");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
