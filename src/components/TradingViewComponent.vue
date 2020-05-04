@@ -102,7 +102,6 @@ export default class TradingViewComponent extends Vue {
         // this.fullcount == 0 ? (this.fullcount = bars["full_count"]) : null;
         // this.order < this.fullcount ? this.delay() : this.socketconect();
 
-
         this.socketconect();
       })
       .catch(c => {});
@@ -271,17 +270,21 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("dev -> 0.003");
+    console.log("prod -> 0.004");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
     // console.log('The id xxxx: ' + this.$route.params.coin);
     //  console.log('The id ppppppp: ' + this.$route.params.price);
 
-    this.currency2 = this.$route.params.coin;
-    this.currency1 = this.$route.params.price;
-    //  await store.commit("upCoin", this.coin);
-    //  await store.commit("upTo", this.to);
+    if (this.$route.params.coin == "BTC") {
+      this.currency1 = this.$route.params.coin;
+      this.currency2 = this.$route.params.price;
+    } else {
+      this.currency2 = this.$route.params.coin;
+      this.currency1 = this.$route.params.price;
+    }
+
     this.drapi();
   }
 
@@ -345,8 +348,7 @@ export default class TradingViewComponent extends Vue {
           "datasource_copypaste",
           "right_bar_stays_on_scroll",
           "context_menus",
-            "remove_library_container_border",
-
+          "remove_library_container_border"
         ],
         enabled_features: [
           "dont_show_boolean_study_arguments",
@@ -364,7 +366,6 @@ export default class TradingViewComponent extends Vue {
           "header_resolutions", //todo: przetestowac
           "control_bar", //todo: przetestowac
           "edit_buttons_in_legend", //todo: przetestowac
-        
 
           "study_dialog_search_control",
 
