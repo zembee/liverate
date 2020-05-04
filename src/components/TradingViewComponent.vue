@@ -84,9 +84,8 @@ export default class TradingViewComponent extends Vue {
       this.currency2 +
       "/" +
       this.currency1 +
-      "/min/1/offset/-" +
-      this.offset +
-      "/limit/1000";
+      "/min/1/offset/0" +
+      "/limit/0";
     // console.log(link);
     // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
     // "/order/trading_view/matcing/min/USD/BTC/1";
@@ -100,16 +99,11 @@ export default class TradingViewComponent extends Vue {
           ? this.newData(bars["data"])
           : this.upData(bars["data"]);
         this.offset = this.order;
+        // this.fullcount == 0 ? (this.fullcount = bars["full_count"]) : null;
+        // this.order < this.fullcount ? this.delay() : this.socketconect();
 
-        //  console.log(bars);
-        this.fullcount == 0 ? (this.fullcount = bars["full_count"]) : null;
-        //  bars.length >= 10 ? this.drapi() : null;
 
-        this.order < this.fullcount ? this.delay() : this.socketconect();
-
-        // console.log( bars.length );
-
-        // console.log("ok2");
+        this.socketconect();
       })
       .catch(c => {});
   }
@@ -277,7 +271,7 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("prod -> 0.002");
+    console.log("dev -> 0.003");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
