@@ -261,7 +261,7 @@ body, html {
 
 .feature-no-touch .header-chart-panel .button:hover, .feature-no-touch .symbol-edit-widget .button:hover {
     background: transparent;
-    color: #ffffff;
+    color: #848484;
 }
 
 .favored-list-container.active span.submenu, .favored-list-container span.submenu.active {
@@ -270,12 +270,12 @@ body, html {
 }
 
 .button.redo svg, .button.undo svg, .button.properties svg, .button.fullscreen svg, .button.drawings svg {
-    fill: #dee8f6 !important;
-    opacity: 0.75;
+    fill: #848484 !important;
+    /* opacity: 0.75; */
 }
 
 .feature-no-touch .button.redo:hover svg, .feature-no-touch .button.undo:hover svg, .feature-no-touch .button.properties:hover svg, .feature-no-touch .button.fullscreen:hover svg, .feature-no-touch .button.drawings:hover svg {
-    fill: #dee8f6 !important;
+    fill: #848484 !important;
     opacity: 1;
 }
 
@@ -1661,6 +1661,13 @@ div.tooltip {
 @media only screen and (max-width: 567px) {
     .header-group-drawing-tools {
         display: none !important;
+    }
+
+    .scrollWrap-2Regigv6-.noScrollBar-a2JtQ0sE- {
+        padding-right: 0 !important;
+    }
+    .header-chart-panel .left {
+        float: right;
     }
 }
 

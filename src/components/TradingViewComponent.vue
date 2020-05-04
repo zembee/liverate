@@ -16,8 +16,8 @@ const LastPrice = 1234.2365;
 // const password_api = process.env.VUE_APP_PASSWORD;
 
 // -> dev
-// const url_api = 'https://api.dev.detrading.co';
-// const name_api = 'de-trading-dev';
+// const url_api = "https://api.dev.detrading.co";
+// const name_api = "de-trading-dev";
 // const password_api = "0oMDPnx7HDYmbnTHKGNuFINALDETRADING?xdev_detrading@2019";
 
 // -> prod
@@ -72,25 +72,25 @@ export default class TradingViewComponent extends Vue {
     // console.log("url---------------", url);
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
-    let firstlink =
-      "/order/trading_view/matcing/" +
-      this.currency2 +
-      "/" +
-      this.currency1 +
-      "/min/1/offset/0/limit/3";
+    let link;
+    if (this.currency2 == "BTC") {
+      link =
+        "/order/trading_view/matcing/" +
+        this.currency1 +
+        "/" +
+        this.currency2 +
+        "/min/1/offset/0" +
+        "/limit/0";
+    } else {
+      link =
+        "/order/trading_view/matcing/" +
+        this.currency2 +
+        "/" +
+        this.currency1 +
+        "/min/1/offset/0" +
+        "/limit/0";
+    }
 
-    let link =
-      "/order/trading_view/matcing/" +
-      this.currency2 +
-      "/" +
-      this.currency1 +
-      "/min/1/offset/0" +
-      "/limit/0";
-    // console.log(link);
-    // /order/trading_view/matcing/USD/BTC/min/1/offset/0/limit/0
-    // "/order/trading_view/matcing/min/USD/BTC/1";
-    //  console.log(link);
-    // console.log("Url--->", url + v + link);
     Vue.axios
       .get(url + v + link, { headers: this.header })
       .then(response => {
@@ -101,7 +101,6 @@ export default class TradingViewComponent extends Vue {
         this.offset = this.order;
         // this.fullcount == 0 ? (this.fullcount = bars["full_count"]) : null;
         // this.order < this.fullcount ? this.delay() : this.socketconect();
-
         this.socketconect();
       })
       .catch(c => {});
@@ -154,16 +153,18 @@ export default class TradingViewComponent extends Vue {
       }
     };
 
-    const tocoin = `${to}_${coin}`;
     const io = require("socket.io-client");
     const Matching = io.connect(`${url}/orders/matching`, configs);
     const gatewayListenALLItems = `${coin}/${to}/REALTIME`;
-    const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ลงขายหรือซื้อ
+    // const myOrder = io.connect(`${url}/orders/me`, configs); // order ที่ลงขายหรือซื้อ
+    // console.log(gatewayListenALLItems);
+
+    // console.log(`${url}/orders/matching`);
     // console.log(gatewayListenALLItems);
 
     Matching.on(gatewayListenALLItems, (data: any) => {
-      //  console.log("xdata--real_time--", data);
-      //   console.log(data);
+      // console.log("xdata--real_time--", data);
+      //  console.log(data);
       this.newBlock(data["res_data"]);
     });
 
@@ -270,26 +271,27 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("prod -> 0.004");
+    console.log("prod -> 0.005");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
     // console.log('The id xxxx: ' + this.$route.params.coin);
     //  console.log('The id ppppppp: ' + this.$route.params.price);
 
-    if (this.$route.params.coin == "BTC") {
-      this.currency1 = this.$route.params.coin;
-      this.currency2 = this.$route.params.price;
-    } else {
-      this.currency2 = this.$route.params.coin;
-      this.currency1 = this.$route.params.price;
-    }
+    // if (this.$route.params.coin == "BTC") {
+    //   this.currency1 = this.$route.params.coin;
+    //   this.currency2 = this.$route.params.price;
+    // } else {
+    this.currency2 = this.$route.params.coin;
+    this.currency1 = this.$route.params.price;
+    // }
 
     this.drapi();
   }
 
   mounted() {
     this.getQuery();
+
     // this.getapi();
     this.feed = this.createFeed();
 
