@@ -271,7 +271,7 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("dev -> 0.005");
+    console.log("dev -> 0.006");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
