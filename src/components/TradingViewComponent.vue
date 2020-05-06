@@ -73,7 +73,7 @@ export default class TradingViewComponent extends Vue {
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
     let link;
-    if (this.currency2 == "BTC"  ) {
+    if (this.currency2 == "BTC" || this.currency2 == "ETH" ) {
       link =
         "/order/trading_view/matcing/" +
         this.currency1 +
@@ -271,7 +271,7 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("prod -> 0.008");
+    console.log("prod -> 0.009");
     // this.currency2 = await this.$route.query.coin;
     // this.currency1 = await this.$route.query.to;
 
