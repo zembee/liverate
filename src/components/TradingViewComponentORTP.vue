@@ -10,7 +10,7 @@ import store from "../store";
 
 declare const TradingView: any;
 declare const $: any;
-const LastPrice = 1234.5678;
+const LastPrice = 0.0004;
 // const url_api = process.env.VUE_APP_URL;
 // const name_api = process.env.VUE_APP_USER;
 // const password_api = process.env.VUE_APP_PASSWORD;
@@ -272,20 +272,28 @@ export default class TradingViewComponent extends Vue {
   }
   getQuery() {
     console.log("dev -> 0.010");
+    // this.currency2 = await this.$route.query.coin;
+    // this.currency1 = await this.$route.query.to;
+
+    // console.log('The id xxxx: ' + this.$route.params.coin);
+    //  console.log('The id ppppppp: ' + this.$route.params.price);
+
+    // if (this.$route.params.coin == "BTC") {
+    //   this.currency1 = this.$route.params.coin;
+    //   this.currency2 = this.$route.params.price;
+    // } else {
+    this.currency2 = this.$route.params.coin;
+    this.currency1 = this.$route.params.price;
+    // }
 
     this.drapi();
   }
-beforeCreate(){
-      this.currency2 = this.$route.params.coin;
-    this.currency1 = this.$route.params.price;
 
-  
-}
   mounted() {
     this.getQuery();
-  console.log(this.currency2);
+
     // this.getapi();
-    this.feed = this.createFeed(this.currency2);
+    this.feed = this.createFeed();
 
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
@@ -473,7 +481,7 @@ beforeCreate(){
     });
   }
 
-  createFeed(currency2:any) {
+  createFeed() {
     let Datafeed: any = {};
 
     Datafeed.DataPulseUpdater = function(datafeed: any, updateFrequency: any) {
@@ -717,11 +725,11 @@ beforeCreate(){
             ":" +
             this.currency2
         );
-
+console.log(LastPrice);
         onSymbolResolvedCallback({
           name: this.currency1 + ":" + this.currency2,
           timezone: "Asia/Bangkok",
-          pricescale:  currency2 == 'ORTP' ? 10000 : 100,
+          pricescale: LastPrice > 1000 ? 100 : 10000,
           minmov: 1,
           minmov2: 0,
           ticker: this.currency1 + ":" + this.currency2,
