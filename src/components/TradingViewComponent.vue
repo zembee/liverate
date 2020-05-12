@@ -271,7 +271,7 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("pord -> 0.010");
+    console.log("pord -> 0.011");
 
     this.drapi();
   }
