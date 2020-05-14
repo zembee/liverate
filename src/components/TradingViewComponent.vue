@@ -32,11 +32,12 @@ export default class TradingViewComponent extends Vue {
   chart: any = null;
   currency1: any;
   currency2: any;
+  digi: any;
   coin: any;
   fullcount: any = 0;
   to: any;
   header: any = {
-    "Accept-language": "TH",
+    "Accept-language": "EN",
     "Content-Type": "application/json",
     Authorization: "Basic " + btoa(`${name_api}:${password_api}`)
   };
@@ -45,9 +46,9 @@ export default class TradingViewComponent extends Vue {
     {
       time: new Date().getTime(),
       close: 0.0,
-      open:  0.0,
-      high:  0.0,
-      low:  0.0,
+      open: 0.0,
+      high: 0.0,
+      low: 0.0,
       volume: 1
     }
   ];
@@ -73,7 +74,7 @@ export default class TradingViewComponent extends Vue {
     let v = "/api/v1";
     // let link = "/order/trading_view/matcing/min/USD/BTC/1";
     let link;
-    if (this.currency2 == "BTC" || this.currency2 == "ETH" ) {
+    if (this.currency2 == "BTC" || this.currency2 == "ETH") {
       link =
         "/order/trading_view/matcing/" +
         this.currency1 +
@@ -129,7 +130,7 @@ export default class TradingViewComponent extends Vue {
   }
 
   socketconect() {
-  //  console.log("ok connect");
+    //  console.log("ok connect");
     const to = this.currency1;
     const coin = this.currency2;
     const { Base64 } = require("js-base64");
@@ -271,22 +272,32 @@ export default class TradingViewComponent extends Vue {
     }
   }
   getQuery() {
-    console.log("pord -> 0.011");
+    console.log("pord -> 0.012");
 
     this.drapi();
   }
-beforeCreate(){
-      this.currency2 = this.$route.params.coin;
+  beforeCreate() {
+    this.currency2 = this.$route.params.coin;
     this.currency1 = this.$route.params.price;
-
-  
-}
+    this.digi = this.$route.params.digi;
+  }
   mounted() {
     this.getQuery();
-  console.log(this.currency2);
-    // this.getapi();
-    this.feed = this.createFeed(this.currency2);
-
+    let url = url_api;
+    let v = "/api/v1";
+    // Vue.axios
+    //   .get(url + v + "/order/currency/detail/" + this.currency2, {
+    //     headers: this.header
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     console.log(response.data.res_data.allow_price_trade_digit);
+    //     let x = response.data.res_data.allow_price_trade_digit;
+    //     let sumz = 10 ** x;
+    //     this.feed = this.createFeed(sumz);
+    //   })
+    //   .catch(c => {});
+      this.feed = this.createFeed(10 ** this.digi);
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
         fullscreen: true,
@@ -473,7 +484,7 @@ beforeCreate(){
     });
   }
 
-  createFeed(currency2:any) {
+  createFeed(sumz: any) {
     let Datafeed: any = {};
 
     Datafeed.DataPulseUpdater = function(datafeed: any, updateFrequency: any) {
@@ -721,7 +732,7 @@ beforeCreate(){
         onSymbolResolvedCallback({
           name: this.currency1 + ":" + this.currency2,
           timezone: "Asia/Bangkok",
-          pricescale:  currency2 == 'ORTP' ? 10000 : 100,
+          pricescale: sumz,
           minmov: 1,
           minmov2: 0,
           ticker: this.currency1 + ":" + this.currency2,
@@ -770,7 +781,13 @@ beforeCreate(){
       this.on("pair_change", function() {
         onResetCacheNeededCallback();
       });
-      this._barsPulseUpdater.subscribeDataListener(symbolInfo, resolution, onRealtimeCallback, listenerGUID, onResetCacheNeededCallback);
+      this._barsPulseUpdater.subscribeDataListener(
+        symbolInfo,
+        resolution,
+        onRealtimeCallback,
+        listenerGUID,
+        onResetCacheNeededCallback
+      );
     };
 
     Datafeed.Container.prototype.unsubscribeBars = function(listenerGUID: any) {

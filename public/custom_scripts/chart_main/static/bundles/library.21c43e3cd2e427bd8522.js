@@ -6,7 +6,7 @@ var dec = decodeURIComponent(array[1]);
 var res = dec.replace("symbol=", "");
 var btc = res.split(":");
 // var res2 = res.replace(":", "/");
-var res2 = btc[1] + "/ " + btc[0];
+var res2 = btc[1] + "/ " + btc[0] + "T";
 
 webpackJsonp(
   [12],

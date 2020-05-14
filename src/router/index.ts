@@ -6,12 +6,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/light/:coin/:price',
+    path: '/light/:coin/:price/:digi',
     name: 'home',
     component: Home
   },
   {
-    path : '/dark/:coin/:price',
+    path : '/dark/:coin/:price/:digi',
     name : 'dark',
     component  :dark
   }
