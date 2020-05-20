@@ -52,6 +52,7 @@ export default class TradingViewComponent extends Vue {
       volume: 1
     }
   ];
+  start: boolean = true;
 
   offset: any = 0;
   constructor() {
@@ -116,9 +117,7 @@ export default class TradingViewComponent extends Vue {
   async upData(bars: any) {
     let m = bars;
     let data = store.getters.chartData;
-    // let concat = data.concat(bars);
     let xx = m.concat(data);
-    // console.log(data);
 
     await store.dispatch("updateChartData", xx);
     await this.changePair();
@@ -127,6 +126,42 @@ export default class TradingViewComponent extends Vue {
   async newData(bars: any) {
     store.dispatch("updateChartData", bars);
     await this.changePair();
+  }
+
+  socketliverate() {
+    console.log("dddd");
+
+    const io = require("socket.io-client");
+    const socket = io("https://wss.live-rates.com/");
+
+    var instruments = ["XAUUSD"];
+    // var instruments = ['XAUUSD', 'USDJPY', 'BTCUSD', 'ETH']
+    var key = "86de929b82";
+
+    socket.on("connect", function() {
+      socket.emit("key", key);
+
+      socket.emit("instruments", instruments);
+    });
+
+    socket.on("rates", (msg: any) => {
+      try {
+        let obj = JSON.parse(msg);
+        console.log("dddaaaaaaaa--------------");
+        if (obj.currency == "XAUUSD") {
+          console.log("AOOOOO");
+          console.log(obj);
+          let data = {
+            price: obj.bid,
+            time: obj.timestamp
+          };
+          console.log(data);
+          this.newBlock(data);
+        }
+      } catch (e) {
+        console.log(msg);
+      }
+    });
   }
 
   socketconect() {
@@ -212,16 +247,34 @@ export default class TradingViewComponent extends Vue {
   }
 
   pushData(data: any, bar: any, time: any) {
-    bar.push({
-      time: time,
-      close: data.price,
-      open: data.price,
-      high: data.price,
-      low: data.price,
-      volume: parseFloat(data.valume)
-    });
-    store.dispatch("updateChartData", bar);
-    this.changePair();
+    if (this.start == true) {
+      bar = [
+        {
+          close: data.price,
+          open: data.price,
+          high: data.price,
+          low: data.price,
+          volume: 0,
+           time: time,
+        }
+      ];
+      this.start = false;
+      store.dispatch("updateChartData", bar);
+      this.changePair();
+      console.log("new", bar);
+    } else {
+      bar.push({
+        time: time,
+        close: data.price,
+        open: data.price,
+        high: data.price,
+        low: data.price,
+        volume: parseFloat(data.valume)
+      });
+      store.dispatch("updateChartData", bar);
+      this.changePair();
+      console.log("add", bar);
+    }
   }
 
   timestring(d: string) {
@@ -273,12 +326,14 @@ export default class TradingViewComponent extends Vue {
   }
   getQuery() {
     console.log("pord -> 0.012");
-
-    this.drapi();
+    this.socketliverate();
+    // this.drapi();
   }
   beforeCreate() {
-    this.currency2 = this.$route.params.coin;
-    this.currency1 = this.$route.params.price;
+    // this.currency2 = this.$route.params.coin;
+    // this.currency1 = this.$route.params.price;
+    this.currency2 = "XAU";
+    this.currency1 = "USD";
     this.digi = this.$route.params.digi;
   }
   mounted() {
@@ -297,7 +352,7 @@ export default class TradingViewComponent extends Vue {
     //     this.feed = this.createFeed(sumz);
     //   })
     //   .catch(c => {});
-      this.feed = this.createFeed(10 ** this.digi);
+    this.feed = this.createFeed(10 ** this.digi);
     TradingView.onready((configurationData: any) => {
       this.chart = new TradingView.widget({
         fullscreen: true,
